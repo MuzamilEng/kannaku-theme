@@ -1,13 +1,13 @@
 import { Box } from '@mui/material'
 import React, { useState } from 'react'
 import { Icon } from '@iconify/react';
-import CPrice from './cPrice';
+import CPrice from './CPrice';
 
 const EQualification = ({onBackward}) => {
     const [show, setShow] = useState(true);
     return (
         <div>
-            <div className="container">
+            <div className="container" style={{fontSize: "1.2rem"}}>
                 {
                     show ? <>
                     <div className="content">

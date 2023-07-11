@@ -8,7 +8,7 @@ const CPrice = ({onBack}) => {
     const [show, setShow] = useState(true);
     return (
         <div>
-            <div className="container">
+            <div className="container" style={{fontSize: "1.2rem"}}>
                 {show ? <>
                     <div>
                 <h1 className='pr_title2'>Connect Price</h1>

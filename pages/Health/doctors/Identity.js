@@ -11,7 +11,7 @@ const Identity = ({handleBackward ,mdProof}) => {
     return (
         <div>
             {!forward ? <>
-                <div className="container">
+                <div className="container" style={{fontSize: "1.2rem"}}>
                 <div className="">
                     <h2 className="pr_title2">{mdProof}</h2>
                     <p>Jamhur Ghifari</p>

@@ -16,7 +16,7 @@ const Progress = () => {
     }
     return (
         <div>
-            <div className="container">
+            <div className="container" style={{fontSize: "1.2rem"}}>
                 <div className="content">
                     <div className="flex_box1">
                 <div className="form-section r_align">

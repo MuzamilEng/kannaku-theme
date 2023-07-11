@@ -1,6 +1,7 @@
 import React from 'react';
 import style from './filter.module.scss';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Icon } from '@iconify/react';
 import Slider from '../Compoment/Slider';
 import Fields from './Fields';
 import Fields2 from './Fields2';
@@ -10,15 +11,15 @@ const Filter = () => {
     <div className={style.filter_sections}>
     <div className={style.filter_sections_container}>
       <div className={style.filter_content}>
-        <h1 className={`${style.headings} ${style.blue}`}>Filter</h1>
+        <h1 style={{fontSize: "1.7rem"}} className={`${style.headings} ${style.blue}`}>Filter</h1>
       </div>
       <div className={style.filter_content1}>
         <div className={style.price_align}>
-          <h2 className={`${style.headings} ${style.blue}`}>Hotel Name</h2>
+          <h2 style={{fontSize: "1.2rem"}} className={`${style.headings} ${style.blue}`}>Hotel Name</h2>
           <KeyboardArrowDownIcon className={style.blue_arrow} />
         </div>
         <div className={`${style.content_body} ${style.filter_hotel}`}>
-          <input
+          <input style={{fontSize: "1.2rem"}}
             type='text'
             className={`${style.content_input} ${style.my_property}`}
             placeholder='Search by Hotel Name'
@@ -28,18 +29,18 @@ const Filter = () => {
       </div>
       <div className={style.filter_content1}>
         <div className={style.price_align}>
-          <h2 className={`${style.headings} ${style.blue}`}>Price</h2>
+          <h2 style={{fontSize: "1.5rem"}} className={`${style.headings} ${style.blue}`}>Price</h2>
           <KeyboardArrowDownIcon alt='' className={style.blue_arrow} />
         </div>
         <div className={style.content_body2}>
-          <h3 className={`${style.headings} ${style.grey} ${style.large}`}>$125 - $980</h3>
+          <h3 style={{fontSize: "1.2rem"}} className={`${style.headings} ${style.grey} ${style.large}`}>$125 - $980</h3>
           {/* <input type="range" min="0" max="100" width={'300px'}/> */}
           <Slider />
         </div>
       </div>
     </div>
     <div className={style.filter_content_section}>
-      <h3 className={`${style.headings} ${style.blue} ${style.pr_type}`}>Property Types</h3>
+      <h3 style={{fontSize: "1.5rem"}} className={`${style.headings} ${style.blue} ${style.pr_type}`}>Property Types</h3>
       <KeyboardArrowDownIcon alt='' className={style.blue_arrow} />
     </div>
     <div className={style.fields}>
@@ -54,7 +55,7 @@ const Filter = () => {
       <Fields place='Serviced Apartments' value='44' />
     </div>
     <div className={style.filter_content_section}>
-      <h3 className={`${style.headings} ${style.blue}`}>Star Category</h3>
+      <h3 style={{fontSize: "1.5rem"}} className={`${style.headings} ${style.blue}`}>Star Category</h3>
       <KeyboardArrowDownIcon alt='' className={style.blue_arrow} />
     </div>
     <div className={style.fields}>
@@ -65,7 +66,7 @@ const Filter = () => {
       <Fields place='1 Star' image='⭐' value='63' />
     </div>
     <div className={style.filter_content_section}>
-      <h3 className={`${style.headings} ${style.blue}`}>User Reviews</h3>
+      <h3 style={{fontSize: "1.5rem"}} className={`${style.headings} ${style.blue}`}>User Reviews</h3>
       <KeyboardArrowDownIcon alt='' className={style.blue_arrow} />
     </div>
     <div className={style.fields}>
@@ -76,7 +77,7 @@ const Filter = () => {
       <Fields place='Bad' value='63' />
     </div>
     <div className={style.filter_content_section}>
-      <h3 className={`${style.headings} ${style.blue}`}>Amenities</h3>
+      <h3 style={{fontSize: "1.5rem"}} className={`${style.headings} ${style.blue}`}>Amenities</h3>
       <KeyboardArrowDownIcon alt='' className={style.blue_arrow} />
     </div>
     <div className={style.fields}>

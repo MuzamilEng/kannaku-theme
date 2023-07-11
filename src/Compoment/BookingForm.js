@@ -22,10 +22,6 @@ const BookingForm = () => {
               <input type='date' className={style.booking_inputs} placeholder='Check In' value='Check In' />
               <input type='date' placeholder='Check Out' className={style.booking_inputs} />
             </div>
-            <div className={style.booking_form_inputs}>
-              <div className={style.navbarROOM_input}>
-              <NavbarRoomInput />
-              </div>
               <div className={style.booking_form_inputs}>
                 <select name='rooms' className={style.select}>
                   <option className={style.switch} value='Rooms / Type'>
@@ -36,6 +32,10 @@ const BookingForm = () => {
                   <option value='large'>Dulex room</option>
                   <option value='large'>Premium room</option>
                 </select>
+              </div>
+            <div className={style.booking_form_inputs}>
+              <div style={{marginTop: ".7rem", paddingTop: '.3rem'}} className={style.navbarROOM_input}>
+              <NavbarRoomInput />
               </div>
               <div className={style.booking_form_inputs}>
                 <div className={style.price_information}>

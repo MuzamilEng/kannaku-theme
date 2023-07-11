@@ -7,7 +7,7 @@ const MedicalRegistration = ({onClick}) => {
     const [forward, setForward] = useState(true)
     return (
         <div>
-            <div className="container">
+            <div className="container" style={{fontSize: "1.2rem"}}>
                {forward ? <>
                 <div className="content">
                     <h2 className='pr_title2'>Medical Registration</h2>

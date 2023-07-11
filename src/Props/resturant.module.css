@@ -10,7 +10,7 @@
   overflow: hidden;
   box-sizing: border-box;
   box-shadow: 5px 5px 5px solid grey;
-  width: 107%;
+  width: 113%;
   /* margin: 2px; */
   border: 13px solid rgb(246 244 244);
 }
@@ -92,9 +92,11 @@
 .my_hotel {
   display: flex;
   align-items: center;
+  margin-top: 1.6rem;
+  margin-left: 1.2rem;
 }
 .discounts_section {
-  margin-left: 6%;
+  margin-left: 9%;
 }
 
 .book_now1 {

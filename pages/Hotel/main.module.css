@@ -28,7 +28,8 @@
 }
 .headings {
   font-family: 'Inter', sans-serif;
-  font-weight: 300 bold;
+  font-weight: 600 bold;
+  font-size: 1.5rem;
 }
 .bold_h1 {
   color: #39466d;
@@ -37,15 +38,13 @@
 .popular_imgcontent_title {
   font-family: 'Inter', sans-serif;
   color: #39466d;
-  font-weight: 300 bold;
+  font-size: 1.5rem;
+  font-weight: 800 bold;
 }
 .content_para {
   font-family: 'Inter', sans-serif;
   font-size: 1.2rem;
-  margin-top: -.3rem;
-}
-.popular_para {
-  /* margin-top: -2%; */
+  margin-top: .7rem;
 }
 .properties {
   margin-top: -5%;

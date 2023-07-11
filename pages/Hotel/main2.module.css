@@ -71,8 +71,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 107%;
-  padding: 67px;
+  width: 113%;
+  /* padding: 67px; */
   font-family: 'Poppins';
   background: rgb(246 244 244);
 }
@@ -105,6 +105,6 @@
 }
 .room_Inputs_sections2 {
   position: absolute;
-  top: 59%;
+  top: 62%;
   left: 53%;
 }

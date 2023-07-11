@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import MedicalRegistration from './medicalRegistration';
+import MedicalRegistration from './MedicalRegistration';
 
 const Profile = () => {
     const [show, setShow] = useState(true);
@@ -8,7 +8,7 @@ const Profile = () => {
     }
     return (
         <div>
-            <div className="container">
+            <div className="container" style={{fontSize: "1.2rem"}}>
                 <h1 className='pr_title'>Profile</h1>
                 {show ? <>
                     <div className="content">

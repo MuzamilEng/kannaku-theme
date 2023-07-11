@@ -102,6 +102,7 @@
     "react-select": "^3.1.0",
     "react-select2-wrapper": "^1.0.4-beta6",
     "react-slick": "^0.27.14",
+    "react-step-progress": "^1.0.3",
     "react-sticky-box": "^0.9.3",
     "react-tag-input": "^6.4.3",
     "redux": "^4.2.0",
@@ -121,8 +122,11 @@
     "xml-loader": "^1.2.1"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.14",
     "eslint": "8.15.0",
-    "eslint-config-next": "12.1.6"
+    "eslint-config-next": "12.1.6",
+    "postcss": "^8.4.25",
+    "tailwindcss": "^3.3.2"
   },
   "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
   "version": "1.0.0",

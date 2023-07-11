@@ -5,9 +5,9 @@ const Inputs = props => {
   return (
     <div className={style.Inputs_container}>
       <div className={style.inputs_container_body}>
-        <div className={style.main2_input_fields}>
+        <div className="flex">
           <input className={` ${style.main2_input} ${style.my_property}`} placeholder={props.holder} onChange={props.onChange} />
-          <img src={props.img} alt='location' className={style.main2_input_img} />
+          <img src={props.img || ""} alt='' className={style.main2_input_img} />
         </div>
       </div>
     </div>

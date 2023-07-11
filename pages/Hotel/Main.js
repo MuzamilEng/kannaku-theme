@@ -30,7 +30,7 @@ const Main = () => {
             </div>
             <div className={style.main_popular_content}>
               <div className={style.popular}>
-                <h1 className={` ${style.popular_title}${style.headings}`}>Popular Destinations</h1>
+                <h1 className={` ${style.popular_imgcontent_title}${style.headings}`}>Popular Destinations</h1>
                 <p className={`${style.content_para} ${style.my_property}`}>
                   Explore these places and other things here
                 </p>
@@ -72,7 +72,7 @@ const Main = () => {
             {/* curated hotels */}
             <div className={style.main_curated_content}>
               <div className={style.curated_hotels}>
-                <h1 className={` ${style.curated_title} ${style.headings}`}>Curated Hotels for you</h1>
+                <h1 className={` ${style.popular_imgcontent_title} ${style.headings}`}>Curated Hotels for you</h1>
                 <p className={` ${style.content_para} ${style.my_property}`}>
                   Explore our collection to find that perfect gateway
                 </p>

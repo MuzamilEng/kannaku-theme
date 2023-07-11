@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
 import FeatherIcon from "feather-icons-react";
 import { Scrollbars } from "react-custom-scrollbars";
 // import AuthContext from "../store/authStore";
@@ -271,6 +272,82 @@ const DropdownList = (props) => {
                   </a>
                 </Link>
               </li>
+               {/* currency exchange */}
+               <li
+                className={`${
+                  "/CurrencyExchange" === pathName ||
+                  "/CurrencyExchange/Dashboard" === pathName ||
+                  "/CurrencyExchange/VertoRate" === pathName ||
+                  "/CurrencyExchange/DesiredRate" === pathName ||
+                  "/CurrencyExchange/Enjoy" === pathName ||
+                  "/CurrencyExchange/EWallet" === pathName ||
+                  "/CurrencyExchange/MailNotification" === pathName ||
+                  "/CurrencyExchange/Management" === pathName ||
+                  "/CurrencyExchange/MarketPlace" === pathName ||
+                  "/CurrencyExchange/Transactions" === pathName
+                    ? "active submenu"
+                    : "submenu"
+                }`}
+              >
+                <a href="/CurrencyExchange">
+                  <CurrencyBitcoinIcon className=""/> <span>Currency Exchange</span>
+                  <span className="menu-arrow"></span>
+                </a>
+                <ul>
+                <li className={`${"/CurrencyExchange" === pathName ? "active" : ""}`}>
+                    <Link href="/CurrencyExchange">
+                      <a>Verto</a>
+                    </Link>
+                  </li>
+                  <li className={`${"/CurrencyExchange/Dashboard" === pathName ? "active" : ""}`}>
+                    <Link href="/CurrencyExchange/Dashboard">
+                      <a>Dashboard</a>
+                    </Link>
+                  </li>
+                  <li className={`${"/CurrencyExchange/VertoRate" === pathName ? "active" : ""}`}>
+                    <Link href="/CurrencyExchange/VertoRate">
+                      <a>VertoRate</a>
+                    </Link>
+                  </li>
+                  <li className={`${"/CurrencyExchange/DesiredRate" === pathName ? "active" : ""}`}>
+                    <Link href="/CurrencyExchange/DesiredRate">
+                      <a>Desired Rate</a>
+                    </Link>
+                  </li>
+                  <li className={`${"/CurrencyExchange/Enjoy" === pathName ? "active" : ""}`}>
+                    <Link href="/CurrencyExchange/Enjoy">
+                      <a>Enjoy Muti-Currency</a>
+                    </Link>
+                  </li>
+                  <li className={`${"/CurrencyExchange/EWallet" === pathName ? "active" : ""}`}>
+                    <Link href="/CurrencyExchange/EWallet">
+                      <a>Ewallets</a>
+                    </Link>
+                  </li>
+                  <li className={`${"/CurrencyExchange/Management" === pathName ? "active" : ""}`}>
+                    <Link href="/CurrencyExchange/Management">
+                      <a>Management</a>
+                    </Link>
+                  </li>
+                  <li className={`${"/CurrencyExchange/MarketPlace" === pathName ? "active" : ""}`}>
+                    <Link href="/CurrencyExchange/MarketPlace">
+                      <a>Marketplace</a>
+                    </Link>
+                  </li>
+                  <li className={`${"/CurrencyExchange/Transactions" === pathName ? "active" : ""}`}>
+                    <Link href="/CurrencyExchange/Transactions">
+                      <a>Transactions</a>
+                    </Link>
+                  </li>
+                  <li className={`${"/CurrencyExchange/MailNotification" === pathName ? "active" : ""}`}>
+                    <Link href="/CurrencyExchange/MailNotification">
+                      <a>Email Notifications</a>
+                    </Link>
+                  </li>
+                  
+                </ul>
+              </li>
+              {/* currency exchange */}
               <li className={`${"/ecommerce" === pathName ? "active" : ""}`}>
                 <Link href="/ecommerce">
                   <a>

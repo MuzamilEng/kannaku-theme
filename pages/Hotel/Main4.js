@@ -13,7 +13,7 @@ const Main4 = () => {
   }
   return (
     <div className={style.main4}>
-      <div className={style.main4_container}>
+      <div style={{fontSize: "1.2rem"}} className={style.main4_container}>
         <div className={style.dropdown_hotel4}>
           <DropdownList />
         </div>
@@ -50,7 +50,7 @@ const Main4 = () => {
               <div className={style.hotel_details}>
                 <div className={style.detail_content}>
                   <div className={style.hotel_detail}>
-                    <h2 className={` ${style.detail_title} ${style.headings}`}>Hotel Details:</h2>
+                    <h2 className="p-2 text-xl font-bold mb-2">Hotel Details:</h2>
                     <p className={` ${style.hotel_location} ${style.my_property}`}>
                       The Orchid Hotel <br />
                       Polat No.3 Nr.HDFC Bank, Ashram Road <br />

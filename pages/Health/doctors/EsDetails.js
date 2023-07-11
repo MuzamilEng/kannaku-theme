@@ -8,7 +8,7 @@ import Navbar from "../../../src/Compoment/Navbar"
 import { topNavigation } from '../../../src/navigation/hospital'
 import Link from 'next/link'
 import EQualification from './EQualification'
-import CPrice from './cPrice'
+// import CPrice from './cPri=ce'
 import BasicDetails from './BasicDetails'
 import DropdownList from '../../../src/Compoment/DropdownList'
 
@@ -16,7 +16,7 @@ function EsDetails() {
   return (
     <>
       <Navbar/>
-    <div className="flex">
+    <div className="flex" style={{fontSize: "1.2rem"}}>
       <div className="">
       <DropdownList />
       </div>

@@ -11,7 +11,7 @@ import RoomInput from '../../src/Props/RoomInput'
 const Main3 = () => {
   return (
     <div className={style.main3}>
-      <div className={style.main3_container}>
+      <div style={{fontSize: "1.2rem"}} className={style.main3_container}>
         <div className={style.dropdown3}>
           <DropdownList />
         </div>
@@ -120,8 +120,8 @@ const Main3 = () => {
               stayTime='1 Room / Night'
             />
             {/* amenities */}
-            <div className={style.amenities_section}>
-              <h1 className={` ${style.aminities} ${style.headings}`}>Aminities</h1>
+            <div  className={style.amenities_section}>
+              <h1 className="font-bold text-lg p-2">Aminities</h1>
               <div className={style.aminities_icons}>
                 <img src={`../../../assets/img/wifi.svg`} alt='aminities' className={style.ami_icons} />
                 <img src={`../../../assets/img/knife.svg`} alt='aminities' className={style.ami_icons} />

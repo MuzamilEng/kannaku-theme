@@ -12,7 +12,7 @@ const Map = ({handleBackward, onClick}) => {
     <div>
     {
         !forward ? <>
-        <div className="container">
+        <div className="container" style={{fontSize: "1.2rem"}}>
         <div className="content">
             <h2 className='pr_title2'>Map Location</h2>
             <p>Practice Location</p>

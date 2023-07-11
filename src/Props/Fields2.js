@@ -5,7 +5,7 @@ const Fields2 = props => {
   return (
     <div className={style.filter_fields}>
       <div className={style.filter_fields_container}>
-        <div className={style.pro_types}>
+        <div style={{fontSize: "1.2rem"}} className={style.pro_types}>
           <div className={style.property_section}>
             <input type='checkbox' name='' id='' className={style.check_buttons} />
             <label htmlFor='property' className={style.propery_label}>

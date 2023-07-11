@@ -13,6 +13,7 @@ if (typeof window !== "undefined") {
 //Datatable Modules
 import DataTable from "datatables.net";
 import Datatable4 from "datatables.net-bs4";
+import AppProvider from "../vertoComponents/api/AppContext"
 
 //fontawesome
 import "../assets/plugins/fontawesome/css/all.css";
@@ -37,6 +38,8 @@ function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
   return getLayout(
     <AuthContextProvider>
+      {/* <AppProvider>
+      </AppProvider> */}
       <Component {...pageProps} />
     </AuthContextProvider>
   );

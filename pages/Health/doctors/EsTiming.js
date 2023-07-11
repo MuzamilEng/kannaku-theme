@@ -7,7 +7,7 @@ const EsTiming = ({ onBackward }) => {
     const [show, setShow] = useState(true)
     return (
         <div>
-            <div className="container">
+            <div className="container" style={{fontSize: "1.2rem"}}>
                 {show ? <>
                     <div className="content">
                         <h2 className='pr_title2'>Establishment Timing</h2>

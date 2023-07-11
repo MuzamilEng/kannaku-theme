@@ -11,7 +11,7 @@ function index() {
   return (
    <>
     <Navbar />
-   <div className="flex">
+   <div className="flex" style={{fontSize: "1.2rem"}}>
     <div className="dp_down">
       <DropdownList />
     </div>

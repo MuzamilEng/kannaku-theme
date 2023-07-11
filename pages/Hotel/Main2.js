@@ -5,6 +5,7 @@ import Inputs from '../../src/Props/Inputs'
 import Navbar1 from '../../src/Compoment/Navbar1'
 import RoomInput from '../../src/Props/RoomInput'
 import Filter from '../../src/Props/Filter'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const Main2 = () => {
   return (
@@ -24,7 +25,7 @@ const Main2 = () => {
               <Inputs holder='Enter City / Hotel' img={`../../../assets/img/map.svg`} />
               <Inputs holder='Check In' img={`../../../assets/img/calender.svg`} />
               <Inputs holder='Check Out' img={`../../../assets/img/calender.svg`} />
-              <Inputs holder='Rooms / People' img={`../../../assets/img/down_arrow.jpg`} />
+              <Inputs holder='Rooms / People' img='' />
               <button className={style.blue_search}>Search</button>
             </div>
             <div className={style.main2_wrapper}>
