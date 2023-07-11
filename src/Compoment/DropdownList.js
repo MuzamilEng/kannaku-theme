@@ -294,11 +294,6 @@ const DropdownList = (props) => {
                   <span className="menu-arrow"></span>
                 </a>
                 <ul>
-                <li className={`${"/CurrencyExchange" === pathName ? "active" : ""}`}>
-                    <Link href="/CurrencyExchange">
-                      <a>Verto</a>
-                    </Link>
-                  </li>
                   <li className={`${"/CurrencyExchange/Dashboard" === pathName ? "active" : ""}`}>
                     <Link href="/CurrencyExchange/Dashboard">
                       <a>Dashboard</a>

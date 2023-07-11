@@ -15,7 +15,7 @@ const Headers = () => {
             <div className="header">
                 <header className='flex container justify-between'>
                     <div className=" ">
-                        <Link href='/currencyExchange'><h1 className='color_white font-bold text-6xl'>Verto</h1></Link>
+                        <Link href='/currencyExchange'><h1 className='color_white font-bold' style={{fontSize: "2.7rem"}}>Verto</h1></Link>
                     </div>
                     <div className="header_Container">
                     <div className="justify_evenly">

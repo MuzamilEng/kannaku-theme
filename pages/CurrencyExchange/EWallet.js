@@ -23,16 +23,16 @@ const EWallet = () => {
             <div className="mrkt_orders">
               {/* offer lists */}
               <div className="flex items-center ml-3 p-4 border-b-2 border-gray-300">
-              <Link href='/VertoRate'>
+              <Link href='/CurrencyExchange/VertoRate'>
                 <span className='text-gray-500 ml-3 p-3' >At Verto Rate</span>
                 </Link>
-                <Link href="/DesiredRate">
+                <Link href="/CurrencyExchange/DesiredRate">
                 <span className='text-gray-500 ml-3 p-3' >At Desired Rate</span>
                 </Link>
-                <Link href='/BankAccount'>
+                <Link href='/CurrencyExchange/BankAccount'>
                 <span className='text-gray-500 ml-3 p-3' >Bank Account</span>
                 </Link>
-                <Link href='/EWallet'>
+                <Link href='/CurrencyExchange/EWallet'>
                 <span className='text-teal-700 ml-3 p-3 border-b-2 border_black'>E-Wallets</span>
                 </Link>
 

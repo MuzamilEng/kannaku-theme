@@ -36,31 +36,46 @@ html{
 }
 @media(max-width:1300px) {
   html{
-    font-size: 80%;
+    font-size: 72%;
   }
-  .dashbord_center{
-    max-width: 75rem;
-    width: 100%;
+}
+@media(max-width:1200px) {
+  html{
+    font-size: 57%;
   }
+  .sidebar{
+    max-width: 22rem;
+  }
+  .dashboard_content{
+    padding: 1.3rem;
+  }
+
 }
 @media(max-width:998px) {
   html{
-    font-size: 80%;
+    font-size: 50%;
   }
-  /* .dashbord_center{
-    max-width: 50rem;
-    width: 100%;
-  } */
 }
 @media(max-width:768px) {
   html{
-    font-size: 65%;
+    font-size: 45%;
+  }
+  .sidebar{
+    max-width: 15rem;
+  }
+  .dashboard_content{
+    padding: 1.3rem;
+    max-width: 40rem;
   }
   
 }
 @media(max-width:368px) {
   html{
     font-size: 45%;
+  }
+  .dashboard_content{
+    max-width: 50rem;
+    width: 100%;
   }
 }
 .height_container{
@@ -77,6 +92,9 @@ body{
 :root {
   --primary-color1: #6e82a5;
   --primary-color2: #101924;
+}
+.sidebar::-webkit-scrollbar {
+  background-color: transparent;
 }
 .sideBar_Container{
   background-color: transparent;
@@ -193,7 +211,9 @@ body{
 .dashboard_content{
   margin-top: 4.2rem;
   max-width: 90rem;
+  width: 100%;
 }
+
 .dashboard_content1{
   margin-top: 2.2rem;
   max-width: 90rem;
