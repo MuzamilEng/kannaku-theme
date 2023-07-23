@@ -54,11 +54,11 @@ const getRequest = async()=>{
   // }, [])
 
 
-  // function changeTelco(event) {
-  //   event.preventDefault();
-  //   setFormType(event.target.value);
-  //   console.log('Hi there, user!', event.target.value);
-  // }
+  function changeTelco(event) {
+    event.preventDefault();
+    setFormType(event.target.value);
+    console.log('Hi there, user!', event.target.value);
+  }
 
 
   return (
@@ -70,7 +70,7 @@ const getRequest = async()=>{
             className="form-control"
             onChange={changeTelco}
             name='select'
-            value={formType}
+            value={'formType'}
           >
                 {telcoOptions?.map((telco) => (
           <option key={telco?.id} value={telco?.text}>
