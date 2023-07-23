@@ -170,6 +170,56 @@ const Cabletv = () => {
     setFormType(event.target.value);
     console.log('Hi there, user!', event.target.value);
   }
+
+  const [data, setData] = useState({
+    modemNumber: "",
+    amount: "",
+    phone:""
+  })
+const getRequest = async()=>{
+ try {
+  const response = await fetch('http://localhost:5000/api/v1/tv')
+  const data = await response.json()
+  console.log(data);
+ } catch (error) {
+  console.log(error);
+ }
+}
+    
+
+  const PostData = (e)=>{;
+    e.preventDefault();
+    setData({...data, [e.target.name]: e.target.value})
+    console.log(data)
+  }
+  let endPoint = "http://localhost:5000/api/v1/tv";
+  
+
+  const submitForm = async () => {
+    try {
+      const response = await fetch(endPoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+  
+  useEffect(()=> {
+    getRequest();
+  }, [])
+
+
+  // useEffect(() => {
+  //   submitForm();
+  // }, [data]);
+  
   function renderSwitch(param) {
     switch (param) {
       case "1":
@@ -476,9 +526,11 @@ const Cabletv = () => {
                     <div className="col-lg-7">
                       <input
                         type="text"
+                        name="modemNumber"
+                        value={data.modemNumber}
                         className="form-control"
                         placeholder="Your Modem Number"
-                        onChange={changeForm}
+                        onChange={PostData}
                       />
                     </div>
                   </div>
@@ -498,7 +550,9 @@ const Cabletv = () => {
                         <input
                           type="text"
                           className="form-control"
-                          onChange={changeTelco}
+                          name="amount"
+                          value={data.amount}
+                          onChange={PostData}
                           placeholder="Amount"
                           aria-label="amount"
                           aria-describedby="basic-addon1"
@@ -514,15 +568,17 @@ const Cabletv = () => {
                     <div className="col-lg-7">
                       <input
                         type="text"
+                        name="phone"
+                        value={data.phone}
                         className="form-control"
                         placeholder="Your Phone Number"
-                        onChange={changeForm}
+                        onChange={PostData}
                       />
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn btn-primary" onClick={submitForm}>
                       Submit
                     </button>
                   </div>

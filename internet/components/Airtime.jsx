@@ -9,60 +9,64 @@ const Airtime = () => {
     { id: 3, text: '9Mobile' },
     { id: 4, text: 'Airtel' }
   ]);
-  const [formType, setFormType] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
+  const [telcoProvider, setFormType] = useState('');
+  const [modemNumber, setMobileNumber] = useState('');
   const [amount, setAmount] = useState('');
 
-  useEffect(() => {
-    // Fetch the data from the API
-    fetch('http://localhost:5000/api/v1/balance')
-      .then(response => response.json())
-      .then(data => {
-        // Update the telcoOptions state with the received data
-        setTelcoOptions(data);
-      })
-      .catch(error => {
-        console.error('Error fetching telco options:', error);
-      });
-  }, []);
+const getRequest = async()=>{
+ try {
+  const response = await fetch('http://localhost:3000/api/v1/airtime')
+  const data = await response.json()
+  console.log(data);
+ } catch (error) {
+  console.log(error);
+ }
+}
 
-  function changeTelco(event) {
-    event.preventDefault();
-    setFormType(event.target.value);
-    console.log('Hi there, user!', event.target.value);
-  }
+  const submitForm = async () => {
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    // Perform the API call with the selected telco, mobile number, and amount
-    // using the values from the component's state
-    fetch('http://localhost:5000/api/v1/purchase', {
-      method: 'POST',
-      body: JSON.stringify({
-        telco: formType,
-        mobileNumber,
-        amount
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('API response:', data);
-        // Handle the API response accordingly
-      })
-      .catch(error => {
-        console.error('Error submitting form:', error);
-      });
-  }
+      const data = {
+        telcoProvider,
+        modemNumber,
+        amount,
+      };
+
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(data),
+        redirect: 'follow',
+      };
+
+      const response = await fetch('http://localhost:3000/api/v1/airtime', requestOptions);
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+  
+  // useEffect(()=> {
+  //   getRequest();
+  // }, [])
+
+
+  // function changeTelco(event) {
+  //   event.preventDefault();
+  //   setFormType(event.target.value);
+  //   console.log('Hi there, user!', event.target.value);
+  // }
+
 
   return (
     <>
       <div className="form-group row">
         <label className="col-lg-5 col-form-label">Telco Provider</label>
         <div className="col-lg-7">
-          <select
+          {/* <select
             className="form-control"
             onChange={changeTelco}
             name='select'
@@ -73,7 +77,8 @@ const Airtime = () => {
             {telco.text}
           </option>
         ))}
-          </select>
+          </select> */}
+          <input type="text" className="form-control" value={telcoProvider} onChange={(e)=> setFormType(e.target.value)} />
         </div>
       </div>
       <div className="form-group row">
@@ -82,10 +87,10 @@ const Airtime = () => {
           <input
             type="text"
             className="form-control"
-            id="tel"
+            value={modemNumber}
             placeholder="Mobile Phone Number"
-            onChange={event => setMobileNumber(event.target.value)}
-          />
+            onChange={(e) => setMobileNumber(e.target.value)}
+            />
         </div>
       </div>
       <div className="form-group row">
@@ -100,7 +105,8 @@ const Airtime = () => {
             <input
               type="text"
               className="form-control"
-              onChange={event => setAmount(event.target.value)}
+              onChange={(e) => setAmount(e.target.value)}
+              value={amount}
               placeholder="Amount"
               aria-label="amount"
               aria-describedby="basic-addon1"
@@ -108,7 +114,7 @@ const Airtime = () => {
           </div>
         </div>
       </div>
-      <button type='submit' className="btn btn-primary" onClick={handleSubmit}>
+      <button type='submit' className="btn btn-primary" onClick={submitForm}>
         Submit
       </button>
     </>
