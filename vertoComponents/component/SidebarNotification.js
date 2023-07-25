@@ -16,7 +16,7 @@ const SidebarNotification = () => {
             const {id, title, time, icon} = list;
             return <main className="bell_align" key={id}>
                 <span className=''>{icon}</span>
-                <p className='text-gray-500'>{title}</p>
+                <p className='text-gray-500 pt-3'>{title}</p>
                 <p className='text-gray-500'>{time}</p>
             </main>
         })}

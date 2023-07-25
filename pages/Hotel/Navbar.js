@@ -77,7 +77,7 @@ const Navbar = () => {
 
         {/* roomsInputs container */}
         {hide ? (
-          <div className={style.nav_roomInput}>
+          <div className={style.nav_roomInputs}>
             <RoomInput rooms='Rooms' />
             <RoomInput rooms='Adults (12+ yrs)' />
             <RoomInput rooms='Children (1-12 yrs)' />

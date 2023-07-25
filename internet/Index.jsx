@@ -413,7 +413,7 @@ const Internet = () => {
                   </div>
                 </div>
                 <form action="#">
-                  <div className="form-group row">
+                  {/* <div className="form-group row">
                     <label className="col-lg-5 col-form-label">
                       Service Type
                     </label>
@@ -424,7 +424,7 @@ const Internet = () => {
                         <option value="2">Data</option>
                       </select>
                     </div>
-                  </div>
+                  </div> */}
 
                   {renderSwitch(formType)}
 

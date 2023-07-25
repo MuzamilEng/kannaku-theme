@@ -10,6 +10,7 @@ const Airtime = () => {
     { id: 4, text: 'Airtel' }
   ]);
   const [telcoProvider, setFormType] = useState('');
+  const [select, setSelect] = useState('');
   const [modemNumber, setMobileNumber] = useState('');
   const [amount, setAmount] = useState('');
 
@@ -29,6 +30,7 @@ const getRequest = async()=>{
       myHeaders.append('Content-Type', 'application/json');
 
       const data = {
+        select,
         telcoProvider,
         modemNumber,
         amount,
@@ -47,6 +49,10 @@ const getRequest = async()=>{
     } catch (error) {
       console.log('error', error);
     }
+    setAmount('');
+    setMobileNumber('');
+    setFormType('');
+    setSelect('');
   };
   
   // useEffect(()=> {
@@ -64,21 +70,30 @@ const getRequest = async()=>{
   return (
     <>
       <div className="form-group row">
+      <label className="col-lg-5 col-form-label">Select Service</label>
+        <div className="col-lg-7">
+      <select className="form-control" value={select} onChange={(e)=> setSelect(e.target.value)}>
+                        <option value="">-- Select --</option>
+                        <option value="Airtime">Airtime</option>
+                        <option value="Data">Data</option>
+                      </select>
+                      <br />
+                      </div>
         <label className="col-lg-5 col-form-label">Telco Provider</label>
         <div className="col-lg-7">
-          {/* <select
+          <select
             className="form-control"
-            onChange={changeTelco}
+            onChange={(e)=> setFormType(e.target.value)}
             name='select'
-            value={'formType'}
+            value={telcoProvider}
           >
                 {telcoOptions?.map((telco) => (
           <option key={telco?.id} value={telco?.text}>
             {telco.text}
           </option>
         ))}
-          </select> */}
-          <input type="text" className="form-control" value={telcoProvider} onChange={(e)=> setFormType(e.target.value)} />
+          </select>
+          {/* <input type="text" className="form-control" value={telcoProvider} onChange={(e)=> setFormType(e.target.value)} /> */}
         </div>
       </div>
       <div className="form-group row">
