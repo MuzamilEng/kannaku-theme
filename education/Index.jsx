@@ -161,7 +161,7 @@ const Education = () => {
       case "2":
         return <Jamb />;
       case "3":
-        return <Waec />;
+        return <Jamb />;
       default:
         return <SchoolFees />;
     }
@@ -431,11 +431,11 @@ const Education = () => {
 
                   {renderSwitch(formType)}
 
-                  <div className="text-right">
+                  {/* <div className="text-right">
                     <button type="submit" className="btn btn-primary">
                       Submit
                     </button>
-                  </div>
+                  </div> */}
                 </form>
               </div>
             </div>
@@ -514,8 +514,8 @@ const Education = () => {
                       <tr>
                         <th>Customer</th>
                         <th>Amount</th>
-                        <th>Due Date</th>
-                        <th>Status</th>
+                        <th>Fee Type</th>
+                        <th>Session</th>
                         <th className="text-right">Action</th>
                       </tr>
                     </thead>

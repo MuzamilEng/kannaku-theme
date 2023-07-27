@@ -413,7 +413,7 @@ const Electricity = () => {
                   </div>
                 </div>
                 <form action="#">
-                  <div className="form-group row">
+                  {/* <div className="form-group row">
                     <label className="col-lg-5 col-form-label">Bill Type</label>
                     <div className="col-lg-7">
                       <select className="form-control" onChange={changeForm}>
@@ -422,15 +422,15 @@ const Electricity = () => {
                         <option value="2">PostPaid</option>
                       </select>
                     </div>
-                  </div>
+                  </div> */}
 
                   {renderSwitch(formType)}
 
-                  <div className="text-right">
+                  {/* <div className="text-right">
                     <button type="submit" className="btn btn-primary">
                       Submit
                     </button>
-                  </div>
+                  </div> */}
                 </form>
               </div>
             </div>
@@ -509,8 +509,8 @@ const Electricity = () => {
                       <tr>
                         <th>Customer</th>
                         <th>Amount</th>
-                        <th>Due Date</th>
-                        <th>Status</th>
+                        <th>Bill Type</th>
+                        <th>Disco</th>
                         <th className="text-right">Action</th>
                       </tr>
                     </thead>

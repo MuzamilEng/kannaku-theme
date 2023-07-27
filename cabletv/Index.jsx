@@ -157,68 +157,59 @@ const Cabletv = () => {
     }
   }, []);
 
-  const [formType, setFormType] = useState("");
-  const [changeTv, setChangeTv] = useState("")
-  const formHandler = (e) => {};
-  function changeForm(event) {
-    setChangeTv(event.target.value)
-    console.log("Hi there, user!", event.target.value);
-  }
-  
-  function changeTelco(event) {
-    event.preventDefault();
-    setFormType(event.target.value);
-    console.log('Hi there, user!', event.target.value);
-  }
-
-  const [data, setData] = useState({
-    modemNumber: "",
-    amount: "",
-    phone:""
-  })
-const getRequest = async()=>{
- try {
-  const response = await fetch('http://localhost:5000/api/v1/tv')
-  const data = await response.json()
-  console.log(data);
- } catch (error) {
-  console.log(error);
- }
-}
-    
-
-  const PostData = (e)=>{;
-    e.preventDefault();
-    setData({...data, [e.target.name]: e.target.value})
-    console.log(data)
-  }
-  let endPoint = "http://localhost:5000/api/v1/tv";
-  
-
-  const submitForm = async () => {
+  const [cable, setCable] = useState("");
+  const [tv, setTV] = useState("");
+  const [modemNumber, setModemNumber] = useState();
+  const [amount, setAmount] = useState();
+  const [mobileNumber, setMobileNumber] = useState();
+  const getRequest = async()=>{
     try {
-      const response = await fetch(endPoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      const data = await response.json();
-      console.log(data);
+     const response = await fetch('http://localhost:3000/api/v1/tvCable/')
+     const data = await response.json()
+     console.log(data);
     } catch (error) {
-      console.log('Error:', error);
+     console.log(error);
     }
-  };
+   }
+   
+     const submitForm = async () => {
+       try {
+         const myHeaders = new Headers();
+         myHeaders.append('Content-Type', 'application/json');
+   
+         const data = {
+           cable,
+           tv,
+           mobileNumber,
+           modemNumber,
+           amount,
+         };
+   
+         const requestOptions = {
+           method: 'POST',
+           headers: myHeaders,
+           body: JSON.stringify(data),
+           redirect: 'follow',
+         };
+   
+         const response = await fetch('http://localhost:3000/api/v1/tvCable/', requestOptions);
+         const result = await response.json();
+         console.log(result);
+       } catch (error) {
+         console.log('error', error);
+       }
+       setAmount('');
+       setMobileNumber('');
+       setCable('');
+       setTV('');
+       setModemNumber('');
+     };
   
-  useEffect(()=> {
-    getRequest();
-  }, [])
+  // useEffect(()=> {
+  //   getRequest();
+  // }, [])
 
 
-  // useEffect(() => {
-  //   submitForm();
-  // }, [data]);
   
   function renderSwitch(param) {
     switch (param) {
@@ -478,9 +469,9 @@ const getRequest = async()=>{
                     <div className="col-lg-7">
                     <select
                     className="form-control"
-                    onChange={changeForm}
-                    name='select cable'
-                    value={changeTv}
+                    onChange={(e)=> setCable(e.target.value)}
+                    name='cable'
+                    value={cable}
                   >
                         {currencyOptions?.map((telco) => (
                   <option key={telco?.id} value={telco?.text}>
@@ -498,9 +489,9 @@ const getRequest = async()=>{
                     <div className="col-lg-7">
                     <select
                     className="form-control"
-                    onChange={changeTelco}
-                    name='select tv'
-                    value={formType}
+                    onChange={(e)=> setTV(e.target.value)}
+                    name='tv'
+                    value={tv}
                   >
                         {tvPlanOptions?.map((telco) => (
                   <option key={telco?.id} value={telco?.text}>
@@ -527,10 +518,10 @@ const getRequest = async()=>{
                       <input
                         type="text"
                         name="modemNumber"
-                        value={data.modemNumber}
+                        value={modemNumber}
                         className="form-control"
                         placeholder="Your Modem Number"
-                        onChange={PostData}
+                        onChange={(e) => setModemNumber(e.target.value)}
                       />
                     </div>
                   </div>
@@ -551,8 +542,8 @@ const getRequest = async()=>{
                           type="text"
                           className="form-control"
                           name="amount"
-                          value={data.amount}
-                          onChange={PostData}
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
                           placeholder="Amount"
                           aria-label="amount"
                           aria-describedby="basic-addon1"
@@ -568,11 +559,11 @@ const getRequest = async()=>{
                     <div className="col-lg-7">
                       <input
                         type="text"
-                        name="phone"
-                        value={data.phone}
+                        name="mobileNumber"
+                        value={mobileNumber}
                         className="form-control"
                         placeholder="Your Phone Number"
-                        onChange={PostData}
+                        onChange={(e) => setMobileNumber(e.target.value)}
                       />
                     </div>
                   </div>
@@ -660,8 +651,8 @@ const getRequest = async()=>{
                       <tr>
                         <th>Customer</th>
                         <th>Amount</th>
-                        <th>Due Date</th>
-                        <th>Status</th>
+                        <th>TV Provider</th>
+                        <th>TV Plan</th>
                         <th className="text-right">Action</th>
                       </tr>
                     </thead>

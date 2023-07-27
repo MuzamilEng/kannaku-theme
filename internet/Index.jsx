@@ -512,8 +512,8 @@ const Internet = () => {
                       <tr>
                         <th>Customer</th>
                         <th>Amount</th>
-                        <th>Due Date</th>
-                        <th>Status</th>
+                        <th>Service</th>
+                        <th>Provider</th>
                         <th className="text-right">Action</th>
                       </tr>
                     </thead>

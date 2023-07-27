@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Select2 from "react-select2-wrapper";
 
 const Electricity = () => {
   const [telcoOptions, setTelcoOptions] = useState([
@@ -8,28 +7,72 @@ const Electricity = () => {
     { id: 3, text: "9Mobile" },
     { id: 4, text: "Airtel" },
   ]);
-  const [formType, setFormType] = useState("");
-
-  function changeForm(event) {
-    setFormType(event.target.value);
-    console.log("Hi there, user!", event.target.value);
-  }
-  function changeTelco(event) {
-    event.preventDefault();
-    setFormType(event.target.value);
-    console.log('Hi there, user!', event.target.value);
-  }
+  const [billType, setBillType] = useState("");
+  const [disco, setDisco] = useState("");
+  const [amount, setAmount] = useState();
+  const [meterNumber, setMeterNumber] = useState();
+  const getRequest = async()=>{
+    try {
+     const response = await fetch('http://localhost:3000/api/v1/electricity/')
+     const data = await response.json()
+     console.log(data);
+    } catch (error) {
+     console.log(error);
+    }
+   }
+   
+     const submitForm = async () => {
+       try {
+         const myHeaders = new Headers();
+         myHeaders.append('Content-Type', 'application/json');
+   
+         const data = {
+           billType,
+           disco,
+           meterNumber,
+           amount,
+         };
+   
+         const requestOptions = {
+           method: 'POST',
+           headers: myHeaders,
+           body: JSON.stringify(data),
+           redirect: 'follow',
+         };
+   
+         const response = await fetch('http://localhost:3000/api/v1/electricity/', requestOptions);
+         console.log(response, "success howa k nhio");
+         const result = await response.json();
+         console.log(result);
+       } catch (error) {
+         console.log('error', error);
+       }
+       setAmount('');
+       setMeterNumber('');
+       setBillType('');
+       setDisco('');
+     };
 
   return (
     <>
+     <div className="form-group row">
+                    <label className="col-lg-5 col-form-label">Bill Type</label>
+                    <div className="col-lg-7">
+                      <select className="form-control" value={billType} onChange={(e) => setBillType(e.target.value)}>
+                        <option value="">-- Select --</option>
+                        <option value="Prepaid">Prepaid</option>
+                        <option value="PostPaid">PostPaid</option>
+                      </select>
+                    </div>
+                  </div>
       <div className="form-group row">
         <label className="col-lg-5 col-form-label">Disco </label>
         <div className="col-lg-7">
         <select
             className="form-control"
-            onChange={changeTelco}
-            name='select'
-            value={formType}
+            value={disco}
+            onChange={(e) => setDisco(e.target.value)}
+            name='disco'
           >
                 {telcoOptions?.map((telco) => (
           <option key={telco?.id} value={telco?.text}>
@@ -37,14 +80,6 @@ const Electricity = () => {
           </option>
         ))}
           </select>
-          {/* <Select2
-            className="w-100"
-            data={telcoOptions}
-            onChange={changeForm}
-            options={{
-              placeholder: "Select Disco ",
-            }}
-          /> */}
         </div>
       </div>
       <div className="form-group row">
@@ -54,7 +89,8 @@ const Electricity = () => {
             type="text"
             className="form-control"
             placeholder="Enter Meter Number"
-            onChange={changeForm}
+            value={meterNumber}
+            onChange={(e) => setMeterNumber(e.target.value)}
           />
         </div>
       </div>
@@ -71,7 +107,8 @@ const Electricity = () => {
             <input
               type="text"
               className="form-control"
-              onChange={changeForm}
+              onChange={(e) => setAmount(e.target.value)}
+              value={amount}
               placeholder="Amount"
               aria-label="amount"
               aria-describedby="basic-addon1"
@@ -79,6 +116,12 @@ const Electricity = () => {
           </div>
         </div>
       </div>
+      <br />
+      <div className="text-right">
+      <button type="submit" className="btn btn-primary" onClick={submitForm}>
+                      Submit
+                    </button>
+                  </div>
     </>
   );
 };

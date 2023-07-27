@@ -60,12 +60,6 @@ const getRequest = async()=>{
   // }, [])
 
 
-  function changeTelco(event) {
-    event.preventDefault();
-    setFormType(event.target.value);
-    console.log('Hi there, user!', event.target.value);
-  }
-
 
   return (
     <>

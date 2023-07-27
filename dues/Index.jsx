@@ -414,24 +414,24 @@ const Dues = () => {
                   </div>
                 </div>
                 <form action="#">
-                  <div className="form-group row">
+                  {/* <div className="form-group row">
                     <label className="col-lg-5 col-form-label"> Type</label>
                     <div className="col-lg-7">
-                      <select className="form-control" onChange={changeForm}>
+                      <select className="form-control" value={serviceType} onChange={(e)=> setServiceType(e.target.value)}>
                         <option value="">-- Select --</option>
-                        <option value="1">Groups/Association</option>
-                        <option value="2">Service Subscription</option>
+                        <option value="Groups/Association">Groups/Association</option>
+                        <option value="Service/Subscription">Service Subscription</option>
                       </select>
                     </div>
-                  </div>
+                  </div> */}
 
                   {renderSwitch(formType)}
 
-                  <div className="text-right">
-                    <button type="submit" className="btn btn-primary">
+                  {/* <div className="text-right">
+                    <button type="submit" className="btn btn-primary" onClick={submitForm}>
                       Submit
                     </button>
-                  </div>
+                  </div> */}
                 </form>
               </div>
             </div>
@@ -510,8 +510,8 @@ const Dues = () => {
                       <tr>
                         <th>Customer</th>
                         <th>Amount</th>
-                        <th>Due Date</th>
-                        <th>Status</th>
+                        <th>Service Type</th>
+                        <th>Subscription</th>
                         <th className="text-right">Action</th>
                       </tr>
                     </thead>
