@@ -8,7 +8,7 @@ const Jamb = () => {
     const [phone, setPhone] = useState("");
     const getRequest = async()=>{
         try {
-         const response = await fetch('http://localhost:3000/api/v1/education/')
+         const response = await fetch('http://localhost:3000/api/v1/jambfee/')
          const data = await response.json()
          console.log(data);
         } catch (error) {
@@ -35,7 +35,7 @@ const Jamb = () => {
                redirect: 'follow',
              };
        
-             const response = await fetch('http://localhost:3000/api/v1/education/', requestOptions);
+             const response = await fetch('http://localhost:3000/api/v1/jambfee/', requestOptions);
              console.log(response, "success howa k nhio");
              const result = await response.json();
              console.log(result);

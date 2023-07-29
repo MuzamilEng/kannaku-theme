@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import FeatherIcon from "feather-icons-react";
 import Image from "next/image";
@@ -18,7 +18,17 @@ const Header = () => {
     const handlesidebar = () => {
       document.body.classList.toggle("mini-sidebar");
     };
-
+    const [loggedInUser, setLoggedInUser] = useState('');
+    const handleLogin = async () => {
+      try {
+        const response = await  fetch('http://localhost:3000/api/v1/auth/login');
+        setLoggedInUser(response); // Save the user's name in state
+        console.log(response, "loggedInUser");
+      } catch (error) {
+        console.error('Error logging in:', error);
+      }
+    };
+    console.log(handleLogin, "handleLogin");
     return (
       <div className="header">
         <div className="header-left">
@@ -66,7 +76,7 @@ const Header = () => {
               <span className="flag-img">
                 <Image src={UsFlag} alt="" height="20" width="20" />
               </span>{" "}
-              <span>English</span>
+              <span onClick={handleLogin}>English</span>
             </a>
             <div className="dropdown-menu dropdown-menu-right">
               <a href="#" className="dropdown-item">

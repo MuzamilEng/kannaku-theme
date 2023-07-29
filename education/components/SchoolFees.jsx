@@ -66,7 +66,7 @@ const Jamb = () => {
             <div className="form-group row">
                 <label className="col-lg-5 col-form-label">School Type </label>
                 <div className="col-lg-7">
-                    <select className="form-control" value={feeType} onChange={(e) => setFeeType(e.target.value)}>
+                    <select className="form-control" value={schoolType} onChange={(e) => setSchoolType(e.target.value)}>
                         <option>-- Select --</option>
                         <option value={'Tertiary'}>Tertiary</option>
                         <option value={'College'}>College</option>
@@ -79,7 +79,7 @@ const Jamb = () => {
             <div className="form-group row">
                 <label className="col-lg-5 col-form-label">School Name </label>
                 <div className="col-lg-7">
-                <select className="form-control" value={schoolType} onChange={(e) => setSchoolType(e.target.value)}>
+                <select className="form-control" value={schoolName} onChange={(e) => setSchoolName(e.target.value)}>
                         <option>-- Select --</option>
                         <option value={'ABC College'}>ABC College</option>
                         <option value={'Base School'}>Base School</option>

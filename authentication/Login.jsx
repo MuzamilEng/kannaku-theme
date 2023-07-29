@@ -10,42 +10,59 @@ import { Grid } from "@material-ui/core";
 import images from "./Images";
 
 const Login = (props) => {
-  const [values, setValues] = useState({ email: "", password: "" });
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [show, setShow] = useState(false)
   const history = useHistory();
   const authCtx = useContext(AuthContext);
+  const nameRegex = /^[A-Za-z ]{2,50}$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+  const phoneRegex = /^[0-9 ()-]{8,15}$/;
 
-  const loginHandler = () => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append(
-      "Authorization",
-      "Token 86b23051dded7a8aafc0a6d2add87475dad29e31"
-    );
 
-    var raw = JSON.stringify({
-      email: values.email,
-      password: values.password,
-    });
-
-    try {
-      fetch("https://apis-paymax.herokuapp.com/usermgt/user/login", {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow",
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          authCtx.login(data);
-        });
-
-      setValues({ email: "", password: "" });
-
-      // history.push("/");
-    } catch (err) {
-      console.log(err);
+  // Validation function
+  const validateInput = (input, regex) => {
+    if (regex instanceof RegExp) {
+      return regex.test(input) || input === '';
     }
+    return true; // Return true for non-regex values
+  };
+
+  const submitForm = async () => {
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+
+      const data = {
+        email,
+        password
+      };
+
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(data),
+        redirect: 'follow',
+      };
+
+      const response = await fetch('http://localhost:3000/api/v1/auth/login', requestOptions);
+      const result = await response.json();
+      console.log(result, "success response");
+      if (response.status === 200) {
+        window.location.href = "/";
+      } else {
+        alert(result.message);
+        window.location.href = "/register";
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+    setEmail("")
+    setPassword("")
+  };
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
   };
 
   const settings = {
@@ -107,14 +124,18 @@ const Login = (props) => {
                               type="email"
                               className="form-control"
                               placeholder="Enter Email"
-                              value={values.email}
-                              onChange={(e) =>
-                                setValues({
-                                  ...values,
-                                  email: e.target.value,
-                                })
-                              }
+                              value={email}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                if (validateInput(value, email)) {
+                                  setEmail(value);
+                                }
+                              }}
                             />
+                            {/* Display an error message if the email is invalid */}
+                            {!validateInput(email, emailRegex) && email !== '' && (
+                              <span className="error-message text-red-600">Invalid email address</span>
+                            )}
                           </div>
                           <div className="form-group">
                             <label className="form-control-label">
@@ -122,18 +143,22 @@ const Login = (props) => {
                             </label>
                             <div className="pass-group">
                               <input
-                                type="password"
-                                className="form-control pass-input"
+                                id="password"
+                                type={show ? 'text' : 'password'}
+                                className="form-control pass-input relative"
                                 placeholder="Enter password"
-                                value={values.password}
-                                onChange={(e) =>
-                                  setValues({
-                                    ...values,
-                                    password: e.target.value,
-                                  })
-                                }
+                                value={password}
+                                onChange={handlePasswordChange}
                               />
-                              <span className="fas fa-eye toggle-password" />
+                              <span
+                              style={{position: "absolute",top: "1.3rem", right: "1rem "}}
+                                className={`fas ${show ? 'fa-eye-slash' : 'fa-eye'} toggle-password` }
+                                onClick={() => setShow(!show)}
+                              />
+                              {/* Display an error message if the email is invalid */}
+                              {!validateInput(password, passwordRegex) && password !== '' && (
+                                <span className="error-message text-red-600">Invalid password. must contain at least 8 characters and a number and a special character </span>
+                              )}
                             </div>
                           </div>
                           <div className="form-group">
@@ -165,27 +190,12 @@ const Login = (props) => {
                           <button
                             className="btn btn-lg btn-block btn-primary w-100"
                             type="submit"
-                            onClick={loginHandler}
+                            onClick={submitForm}
                           >
                             Login
                           </button>
-                          {/* <div className="login-or">
-                                            <span className="or-line" />
-                                            <span className="span-or">or</span>
-                                        </div> */}
-                          {/* Social Login */}
-                          {/* <div className="social-login mb-3">
-                                            <span>Login with</span>
-                                            <a href="#" className="facebook">
-                                                <i className="fab fa-facebook-f" />
-                                            </a>
-                                            <a href="#" className="google">
-                                                <i className="fab fa-google" />
-                                            </a>
-                                        </div> */}
-                          {/* /Social Login */}
                           <div className="text-center dont-have">
-                            Don't have an account yet?{" "}
+                            Don't have an account yet?
                             <Link href="/register">Register</Link>
                           </div>
                         </div>

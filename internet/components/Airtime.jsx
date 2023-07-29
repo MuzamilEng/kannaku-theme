@@ -14,15 +14,6 @@ const Airtime = () => {
   const [modemNumber, setMobileNumber] = useState('');
   const [amount, setAmount] = useState('');
 
-const getRequest = async()=>{
- try {
-  const response = await fetch('http://localhost:3000/api/v1/airtime')
-  const data = await response.json()
-  console.log(data);
- } catch (error) {
-  console.log(error);
- }
-}
 
   const submitForm = async () => {
     try {
@@ -54,10 +45,6 @@ const getRequest = async()=>{
     setFormType('');
     setSelect('');
   };
-  
-  // useEffect(()=> {
-  //   getRequest();
-  // }, [])
 
 
 
@@ -87,7 +74,6 @@ const getRequest = async()=>{
           </option>
         ))}
           </select>
-          {/* <input type="text" className="form-control" value={telcoProvider} onChange={(e)=> setFormType(e.target.value)} /> */}
         </div>
       </div>
       <div className="form-group row">

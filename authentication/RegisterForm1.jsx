@@ -69,7 +69,7 @@ const RegisterForm1 = ({ values, sendInfo, nextStep, setValues }) => {
                       onChange={(e) => {
                         setValues({
                           ...values,
-                          phoneNumber: e.target.value,
+                          phone: e.target.value,
                         });
                       }}
                     />
@@ -115,66 +115,6 @@ const RegisterForm1 = ({ values, sendInfo, nextStep, setValues }) => {
                       Service Provider/Merchant
                     </label>
                   </div>
-                  {/* <div className="form-group d-flex align-items-center  justify-content-between">
-                <div className="w-100 mr-2">
-                  Major Category
-                  <div class="dropdown">
-                    <button
-                      class="btn btn-secondary dropdown-toggle w-100 bg-transparent text-secondary"
-                      type="button"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      Consulting
-                    </button>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <a class="dropdown-item" href="#">
-                        Action
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        Another action
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        Something else here
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-100 ml-2">
-                  Sub Category
-                  <div class="dropdown">
-                    <button
-                      class="btn btn-secondary dropdown-toggle w-100 bg-transparent text-secondary"
-                      type="button"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      Health
-                    </button>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <a class="dropdown-item" href="#">
-                        Action
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        Another action
-                      </a>
-                      <a class="dropdown-item" href="#">
-                        Something else here
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
                   <div className="form-group mb-0">
                     <button
                       className="btn btn-lg btn-block btn-primary w-100"
@@ -185,23 +125,6 @@ const RegisterForm1 = ({ values, sendInfo, nextStep, setValues }) => {
                     </button>
                   </div>
                 </form>
-                {/* /Form */}
-
-                {/* <div className="login-or">
-                              <span className="or-line"></span>
-                              <span className="span-or">or</span>
-                          </div> */}
-                {/* Social Login */}
-                {/* <div className="social-login">
-                              <span>Register with</span>
-                              <a href="#" className="facebook">
-                                  <i className="fab fa-facebook-f"></i>
-                              </a>
-                              <a href="#" className="google">
-                                  <i className="fab fa-google"></i>
-                              </a>
-                          </div> */}
-                {/* /Social Login */}
                 <div className="text-center dont-have" onClick={sendInfo}>
                   Already have an account?{" "}
                   <Link href="/login">Sign in instead</Link>

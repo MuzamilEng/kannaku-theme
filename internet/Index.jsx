@@ -13,6 +13,7 @@ import Airtime from "./components/Airtime";
 let SlideToggle;
 
 const Internet = () => {
+  const [data, setData] = useState([]);
   const [date, setDate] = useState(new Date());
   const [currencyOptions, setcurrencyOptions] = useState([
     { id: 1, text: "Select Currency" },
@@ -143,14 +144,27 @@ const Internet = () => {
       const ApexCharts = require("apexcharts");
       console.log(ApexCharts);
     }
-  }, []);
-
+  }, [data]);
   const [formType, setFormType] = useState("");
   const formHandler = (e) => {};
   function changeForm(event) {
     setFormType(event.target.value);
     console.log("Hi there, user!", event.target.value);
   }
+  const getRequest = async()=>{
+    try {
+     const response = await fetch('http://localhost:3000/api/v1/airtime/')
+     const data = await response.json()
+     setData(data);
+     console.log(data, "data from server");
+    } catch (error) {
+     console.log(error);
+    }
+   }
+
+   useEffect(() => {
+    getRequest();
+   }, [])
 
   function renderSwitch(param) {
     switch (param) {
@@ -413,26 +427,9 @@ const Internet = () => {
                   </div>
                 </div>
                 <form action="#">
-                  {/* <div className="form-group row">
-                    <label className="col-lg-5 col-form-label">
-                      Service Type
-                    </label>
-                    <div className="col-lg-7">
-                      <select className="form-control" onChange={changeForm}>
-                        <option value="">-- Select --</option>
-                        <option value="1">Airtime</option>
-                        <option value="2">Data</option>
-                      </select>
-                    </div>
-                  </div> */}
-
                   {renderSwitch(formType)}
 
                   <div className="text-right">
-                    {/* btn commented */}
-                    {/* <button type="submit" className="btn btn-primary">
-                      Submit
-                    </button> */}
                   </div>
                 </form>
               </div>
@@ -507,115 +504,27 @@ const Internet = () => {
                 </div>
 
                 <div className="table-responsive">
-                  <table className="table table-stripped table-hover">
-                    <thead className="thead-light">
-                      <tr>
-                        <th>Customer</th>
-                        <th>Amount</th>
-                        <th>Service</th>
-                        <th>Provider</th>
-                        <th className="text-right">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {recentinvoices_.map((item, index) => {
-                        let status;
-                        if (item.status === "Paid") {
-                          status = (
-                            <span className="badge bg-success-light">
-                              {item.status}
-                            </span>
-                          );
-                        } else if (item.status === "Sent") {
-                          status = (
-                            <span className="badge bg-info-light">
-                              {item.status}
-                            </span>
-                          );
-                        } else if (item.status === "Partially Paid") {
-                          status = (
-                            <span className="badge bg-warning-light">
-                              {item.status}
-                            </span>
-                          );
-                        } else if (item.status === "Overdue") {
-                          status = (
-                            <span className="badge bg-danger-light">
-                              {item.status}
-                            </span>
-                          );
-                        }
-
+                  <div className="flex grid-cols-5 justify-evenly p-1 border-b-2 border-gray-500">
+                    <p className="text-gray-800 text-base">Customer</p>
+                    <p className="text-gray-800 text-base">Amount</p>
+                    <p className="text-gray-800 text-base">Service</p>
+                    <p className="text-gray-800 text-base">Provider</p>
+                    <p className="text-gray-800 text-base">Action</p>
+                  </div>
+                  <div className="">
+                  {data?.slice(-6)?.map((item, index)=> {
+                        const {id ,select, telcoProvider, modemNumber, amount } = item;
                         return (
-                          <tr key={index}>
-                            <td>
-                              <h2 className="table-avatar">
-                                <Link href="/profile">
-                                  <a>
-                                    <div className="mr-2 w-10 h-10 inline avatar avatar-sm avatar-img">
-                                      <Image
-                                        width="40"
-                                        height="40"
-                                        className="rounded-circle"
-                                        src={item.image}
-                                        alt="User Image"
-                                      />
-                                    </div>
-                                    {item.customer_name}
-                                  </a>
-                                </Link>
-                              </h2>
-                            </td>
-                            <td>{item.amount}</td>
-                            <td>{item.due_date}</td>
-                            <td>{status}</td>
-                            <td className="text-right">
-                              <div className="dropdown dropdown-action">
-                                <a
-                                  href="#"
-                                  className="action-icon dropdown-toggle"
-                                  data-bs-toggle="dropdown"
-                                  aria-expanded="false"
-                                >
-                                  <i className="fas fa-ellipsis-h" />
-                                </a>
-                                <div className="dropdown-menu dropdown-menu-right">
-                                  <Link href="/edit-invoice">
-                                    <a className="dropdown-item">
-                                      <i className="far fa-edit mr-2"></i>
-                                      Edit
-                                    </a>
-                                  </Link>
-                                  <Link href="/view-invoice">
-                                    <a className="dropdown-item">
-                                      <i className="far fa-eye mr-2"></i>
-                                      View
-                                    </a>
-                                  </Link>
-                                  <a className="dropdown-item" href="">
-                                    <i className="far fa-trash-alt mr-2"></i>
-                                    Delete
-                                  </a>
-                                  <a className="dropdown-item" href="">
-                                    <i className="far fa-check-circle mr-2"></i>
-                                    Mark as sent
-                                  </a>
-                                  <a className="dropdown-item" href="">
-                                    <i className="far fa-paper-plane mr-2"></i>
-                                    Send Invoice
-                                  </a>
-                                  <a className="dropdown-item" href="">
-                                    <i className="far fa-copy mr-2"></i>
-                                    Clone Invoice
-                                  </a>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        );
+                          <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
+                            <p>Peter Doe </p>
+                           <p>{select}</p>
+                           <p>{telcoProvider}</p>
+                           <p>{modemNumber}</p>
+                           <p>{amount}</p>
+                          </div>
+                        )
                       })}
-                    </tbody>
-                  </table>
+                  </div>
                 </div>
               </div>
             </div>
