@@ -152,6 +152,18 @@ const Dues = () => {
     setFormType(event.target.value);
     console.log("Hi there, user!", event.target.value);
   }
+  const [name1, setName1] = useState({username:""});
+  useEffect(() => {
+    const getUsernameFromLocalStorage = () => {
+      const username = localStorage.getItem('username');
+      return username;
+    };
+
+    const initialUsername = getUsernameFromLocalStorage();
+    setName1((prevName) => ({ ...prevName, username: initialUsername }));
+
+    console.log(initialUsername, "login user name");
+  }, []);
   const [data, setData] = useState([])
   const [state, setState] = useState(data?.[0]);
   const getRequest = async()=>{
@@ -169,6 +181,17 @@ const Dues = () => {
     getRequest();
    }, [])
 
+   const initialToggleStates = data?.map(() => false);
+   const [toggleStates, setToggleStates] = useState(initialToggleStates);
+ 
+   const handleToggle = (index) => {
+     // Create a new array by copying the existing toggleStates array
+     const newToggleStates = [...toggleStates];
+     // Toggle the value for the selected index
+     newToggleStates[index] = !newToggleStates[index];
+     // Update the state with the new array
+     setToggleStates(newToggleStates);
+   };
   function renderSwitch(param) {
     switch (param) {
       case "1":
@@ -521,15 +544,15 @@ const Dues = () => {
                 </div>
 
                 {/* table  data */}
-                <div className="table-responsive">
-                  <div className="flex grid-cols-5 justify-evenly p-1 border-b-2 border-gray-500">
+                <div className="table-responsive" style={{ marginLeft: "-1rem" }}>
+                  <div className="flex grid-cols-5 justify-evenly p-1 border-b-2 border-gray-500" style={{ marginLeft: "-5rem" }}>
                     <p className="text-gray-800 text-base">Customer</p>
                     <p className="text-gray-800 text-base">Service</p>
-                    <p className="text-gray-800 text-base">Group Type</p>
-                    <p className="text-gray-800 text-base">Subscription</p>
+                    <p className="text-gray-800 text-base">Amount</p>
+                    <p className="text-gray-800 text-base">Number</p>
                     <p className="text-gray-800 text-base">Action</p>
                   </div>
-                  <div className="">
+                  <div className="" style={{ marginLeft: "-5rem" }}>
                   {data?.slice(-6)?.map((item, index)=> {
                      
                         const { id, serviceType,
@@ -539,11 +562,31 @@ const Dues = () => {
                           amount } = item;
                         return (
                           <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
-                            <p>Peter Doe </p>
+                            <p>{name1?.username}</p>
                            <p>{subscription}</p>
-                           <p>{groupService}</p>
+                           {/* <p>{groupService}</p> */}
                            <p>{mobileNumber}</p>
                            <p>{amount}</p>
+                           <div className="relative">
+                            <p
+                              className="text-2xl cursor-pointer"
+                              onClick={() => handleToggle(index)}
+                              value={index}
+                            >
+                              ...
+                            </p>
+                            {toggleStates[index] && ( // Show toggle only if toggleStates[index] is true
+                              <div className="text-sm absolute ml-4 pl-4 -right-0 top-0">
+                                <ul className="h-fit border-2 border-gray-600 ul_lists text-justify">
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Download Receipt</li>
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Forward Receipt</li>
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Pay another</li>
+                                </ul>
+
+
+                              </div>
+                            )}
+                          </div>
                           </div>
                         )
                       })}

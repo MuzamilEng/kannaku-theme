@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import Link from "next/link";
-import AuthContext from "../store/authStore";
+import AuthContext, { useGlobalContext } from "../store/authStore";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -19,7 +19,7 @@ const Login = (props) => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
   const phoneRegex = /^[0-9 ()-]{8,15}$/;
-
+ const {person, setPerson} = useGlobalContext();
 
   // Validation function
   const validateInput = (input, regex) => {
@@ -38,7 +38,7 @@ const Login = (props) => {
         email,
         password
       };
-
+// baba@gmail.com  babaA@123
       const requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -48,10 +48,14 @@ const Login = (props) => {
 
       const response = await fetch('http://localhost:3000/api/v1/auth/login', requestOptions);
       const result = await response.json();
-      console.log(result, "success response");
-      if (response.status === 200) {
-        window.location.href = "/";
-      } else {
+      console.log(result?.username, "success response", result);
+      console.log(response, "response login");
+    localStorage.setItem('username', result?.username);
+    const username = localStorage.getItem('username');
+    console.log(username, "login user name");
+      if (response.status === 200 || 201) {
+        window.location.href = `/`;  
+          } else {
         alert(result.message);
         window.location.href = "/register";
       }

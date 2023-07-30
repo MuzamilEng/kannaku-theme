@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-const Jamb = () => {
+const Jamb = ({onSuccess}) => {
     // feeType, wacepkg, amount, phone
     const [feeType, setFeeType] = useState("");
     const [wacepkg, setWacepkg] = useState("");
     const [amount, setAmount] = useState("");
     const [phone, setPhone] = useState("");
-    const getRequest = async()=>{
-        try {
-         const response = await fetch('http://localhost:3000/api/v1/jambfee/')
-         const data = await response.json()
-         console.log(data);
-        } catch (error) {
-         console.log(error);
-        }
-       }
+
        
-         const submitForm = async () => {
+         const submitForm = async (e) => {
+          // e.preventDefault();
            try {
              const myHeaders = new Headers();
              myHeaders.append('Content-Type', 'application/json');
@@ -36,6 +29,11 @@ const Jamb = () => {
              };
        
              const response = await fetch('http://localhost:3000/api/v1/jambfee/', requestOptions);
+             if (response.ok || response.status === 200) {
+              window.location.reload("/education");
+              onSuccess();
+              console.log(typeof(onSuccess), "success ho");
+            }
              console.log(response, "success howa k nhio");
              const result = await response.json();
              console.log(result);

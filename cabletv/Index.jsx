@@ -149,7 +149,18 @@ const Cabletv = () => {
   //   },
   //   recentestimates_ = recentestimates,
   //   recentinvoices_ = recentinvoices;
+  const [name1, setName1] = useState({username:""});
+  useEffect(() => {
+    const getUsernameFromLocalStorage = () => {
+      const username = localStorage.getItem('username');
+      return username;
+    };
 
+    const initialUsername = getUsernameFromLocalStorage();
+    setName1((prevName) => ({ ...prevName, username: initialUsername }));
+
+    console.log(initialUsername, "login user name");
+  }, []);
   useEffect(() => {
     if (document) {
       const ApexCharts = require("apexcharts");
@@ -174,7 +185,18 @@ const Cabletv = () => {
 
    useEffect(() => {
     getRequest();
-   }, [cable, tv, modemNumber, amount, mobileNumber]);
+   }, []);
+   const initialToggleStates = data?.map(() => false);
+   const [toggleStates, setToggleStates] = useState(initialToggleStates);
+ 
+   const handleToggle = (index) => {
+     // Create a new array by copying the existing toggleStates array
+     const newToggleStates = [...toggleStates];
+     // Toggle the value for the selected index
+     newToggleStates[index] = !newToggleStates[index];
+     // Update the state with the new array
+     setToggleStates(newToggleStates);
+   };
    
      const submitForm = async () => {
        try {
@@ -194,6 +216,9 @@ const Cabletv = () => {
    
          const response = await fetch('http://localhost:3000/api/v1/tvCable/', requestOptions);
          const result = await response.json();
+         if (response.ok || response.status === 200) {
+          window.location.reload("/cabletv");
+         }
        } catch (error) {
          console.log('error', error);
        }
@@ -628,25 +653,45 @@ const Cabletv = () => {
                 </div>
 
                 {/* table  data */}
-                <div className="table-responsive">
-                  <div className="flex grid-cols-5 justify-evenly p-1 border-b-2 border-gray-500">
+                <div className="table-responsive" style={{ marginLeft: "-1rem" }}>
+                  <div className="flex grid-cols-5 justify-evenly p-1 border-b-2 border-gray-500" style={{ marginLeft: "-5rem" }}>
                     <p className="text-gray-800 text-base">Customer</p>
-                    <p className="text-gray-800 text-base">Amount</p>
-                    <p className="text-gray-800 text-base">Tv Provider</p>
                     <p className="text-gray-800 text-base">Tv Plan</p>
+                    <p className="text-gray-800 text-base">Tv Provider</p>
+                    <p className="text-gray-800 text-base">Amount</p>
                     <p className="text-gray-800 text-base">Action</p>
                   </div>
-                  <div className="">
+                  <div className="" style={{ marginLeft: "-5rem" }}>
                   {data?.slice(-6)?.map((item, index)=> {
                      
                         const {cable, id, tv, mobileNumber, modemNumber, amount, } = item;
                         return (
                           <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
-                            <p>Peter Doe </p>
-                           <p>{cable}</p>
+                            <p>{name1?.username}</p>
                            <p>{tv}</p>
-                           <p>{modemNumber}</p>
+                           <p>{cable}</p>
+                           {/* <p>{modemNumber}</p> */}
                            <p>{amount}</p>
+                           <div className="relative">
+                            <p
+                              className="text-2xl cursor-pointer"
+                              onClick={() => handleToggle(index)}
+                              value={index}
+                            >
+                              ...
+                            </p>
+                            {toggleStates[index] && ( // Show toggle only if toggleStates[index] is true
+                              <div className="text-sm absolute ml-4 pl-4 -right-0 top-0">
+                                <ul className="h-fit border-2 border-gray-600 ul_lists text-justify">
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Download Receipt</li>
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Forward Receipt</li>
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Pay another</li>
+                                </ul>
+
+
+                              </div>
+                            )}
+                          </div>
                           </div>
                         )
                       })}

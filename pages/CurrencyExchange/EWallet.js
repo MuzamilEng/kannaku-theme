@@ -60,7 +60,6 @@ const EWallet = () => {
                     <span className="font-bold">Transaction Type</span>
                     <span className="font-bold">Status</span>
                     <span className="font-bold">Description</span>
-
                   </div>
                   {eWallets?.map((item) => {
                     const { order_id, oredr_date, credit, debit, balance, withdraw, status, description } = item;

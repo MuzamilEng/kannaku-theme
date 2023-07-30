@@ -34,85 +34,85 @@ const Education = () => {
     { id: 9, text: "United States" },
   ]);
   const salesOptions = {
-      colors: ["#7638ff", "#fda600"],
-      chart: {
-        type: "bar",
-        fontFamily: "Poppins, sans-serif",
-        height: 350,
-        toolbar: {
-          show: false,
-        },
+    colors: ["#7638ff", "#fda600"],
+    chart: {
+      type: "bar",
+      fontFamily: "Poppins, sans-serif",
+      height: 350,
+      toolbar: {
+        show: false,
       },
-      series: [
-        {
-          name: "Received",
-          type: "column",
-          data: [70, 150, 80, 180, 150, 175, 201, 60, 200, 120, 190, 160, 50],
-        },
-        {
-          name: "Pending",
-          type: "column",
-          data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16, 80],
-        },
-      ],
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "60%",
-          endingShape: "rounded",
-        },
+    },
+    series: [
+      {
+        name: "Received",
+        type: "column",
+        data: [70, 150, 80, 180, 150, 175, 201, 60, 200, 120, 190, 160, 50],
       },
-      dataLabels: {
-        enabled: false,
+      {
+        name: "Pending",
+        type: "column",
+        data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16, 80],
       },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"],
+    ],
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "60%",
+        endingShape: "rounded",
       },
-      xaxis: {
-        categories: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-        ],
-      },
-      yaxis: {
-        title: {
-          text: "$ (thousands)",
-        },
-      },
-      fill: {
-        opacity: 1,
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return "$ " + val + " thousands";
-          },
-        },
-      },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200,
-            },
-            legend: {
-              position: "bottom",
-            },
-          },
-        },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ["transparent"],
+    },
+    xaxis: {
+      categories: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
       ],
     },
+    yaxis: {
+      title: {
+        text: "$ (thousands)",
+      },
+    },
+    fill: {
+      opacity: 1,
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return "$ " + val + " thousands";
+        },
+      },
+    },
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
+  },
     invoiceOptions = {
       colors: ["#7638ff", "#ff737b", "#fda600", "#1ec1b0"],
       chart: {
@@ -148,46 +148,91 @@ const Education = () => {
   }, []);
 
   const [formType, setFormType] = useState("");
-  const formHandler = (e) => {};
+  const formHandler = (e) => { };
   function changeForm(event) {
     setFormType(event.target.value);
     console.log("Hi there, user!", event.target.value);
   }
   const [data, setData] = useState([]);
-  const [data1, setData1] = useState([]);
+  const [user, setUser] = useState([]);
+  const [name1, setName1] = useState({ username: "" });
+  useEffect(() => {
+    const getUsernameFromLocalStorage = () => {
+      const username = localStorage.getItem('username');
+      return username;
+    };
 
-  const getData = async ()=> {
+    const initialUsername = getUsernameFromLocalStorage();
+    setName1((prevName) => ({ ...prevName, username: initialUsername }));
+
+    console.log(initialUsername, "login user name");
+  }, []);
+
+  const getData = async () => {
     try {
-     const response1 = await fetch('http://localhost:3000/api/v1/jambfee/');
-     const data2 = await response1.json();
-     setData1(data2);
-     console.log(data2, "data2 from server");
+      const response1 = await fetch('http://localhost:3000/api/v1/jambfee/');
+      const data2 = await response1.json();
+      setUser(data2);
+      console.log(data2, "data2 from server");
     } catch (error) {
-     console.log(error);
+      console.log(error);
     }
   }
-  const getRequest = async()=>{
+  const getRequest = async () => {
     try {
-     const response = await fetch('http://localhost:3000/api/v1/education/')
-     const data = await response.json()
-     setData(data);
-     console.log(data, "data1 from server");
+      const response = await fetch('http://localhost:3000/api/v1/education/')
+      const data = await response.json()
+      setData(data);
+      console.log(data, "data1 from server");
     } catch (error) {
-     console.log(error);
+      console.log(error);
     }
-   }
+  }
+  const getLatestData = async () => {
 
-   useEffect(() => {
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/education/')
+      const data = await response.json()
+      setData(data);
+      console.log(data, "data1 from server");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
     getRequest();
     getData();
-   }, [])
+  }, [])
+  const initialToggleState = data?.map(() => false);
+  const [toggleState, setToggleState] = useState(initialToggleState);
+
+  const handleToggles = (index) => {
+    // Create a new array by copying the existing toggleStates array
+    const newToggleState = [...toggleState];
+    // Toggle the value for the selected index
+    newToggleState[index] = !newToggleState[index];
+    // Update the state with the new array
+    setToggleState(newToggleState);
+  };
+  const initialToggleStates = data?.map(() => false);
+  const [toggleStates, setToggleStates] = useState(initialToggleStates);
+
+  const handleToggle = (index) => {
+    // Create a new array by copying the existing toggleStates array
+    const newToggleStates = [...toggleStates];
+    // Toggle the value for the selected index
+    newToggleStates[index] = !newToggleStates[index];
+    // Update the state with the new array
+    setToggleStates(newToggleStates);
+  };
 
   function renderSwitch(param) {
     switch (param) {
       case "1":
-        return <SchoolFees />;
+        return <SchoolFees onSuccess={() => getLatestData()} />;
       case "2":
-        return <Jamb />;
+        return <Jamb onSuccess={() => getLatestData()} />;
       case "3":
         return <Jamb />;
       default:
@@ -535,39 +580,63 @@ const Education = () => {
                     </div>
                   </div>
                 </div>
- {/* table  data */}
- <div className="table-responsive">
-                  <div className="flex grid-cols-5 justify-evenly p-1 border-b-2 border-gray-500">
+                {/* table  data */}
+                <div className="table-responsive" style={{ marginLeft: "-1rem" }}>
+                  <div className="flex grid-cols-5 justify-evenly p-1 border-b-2 border-gray-500" style={{ marginLeft: "-5rem" }}>
                     <p className="text-gray-800 text-base">Customer</p>
                     <p className="text-gray-800 text-base">Type</p>
-                    <p className="text-gray-800 text-base">Session</p>
+                    <p className="text-gray-800 text-base">Amount</p>
                     <p className="text-gray-800 text-base">Phone Number</p>
                     <p className="text-gray-800 text-base">Action</p>
                   </div>
-                  <div className="">
-                  {data?.slice(-6)?.map((item, index)=> {
-                     
-                        const { id,feeType,
-                          schoolType,
-                          schoolName,
-                          adSeccion,
-                          semester,
-                          matric,
-                          wacepkg,
-                          name,
-                          phone,
-                          amount, } = item;
-                        return (
-                          <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
-                            <p>Peter Doe </p>
-                           <p>{item?.feeType}</p>
-                           <p>{item?.adSeccion || item?.wacepkg}</p>
-                           <p>{item?.phone}</p>
-                           <p>{amount}</p>
+                  <div className="" style={{ marginLeft: "-5rem" }}>
+                    <div className="containers">
+                    {data?.slice(-3)?.map((item, index) => {
+
+                      const { id, feeType,
+                        schoolType,
+                        schoolName,
+                        adSeccion,
+                        semester,
+                        matric,
+                        wacepkg,
+                        name,
+                        phone,
+                        amount, } = item;
+                        {console.log(item, "console item");}
+                      return (
+                        <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
+                          <p>{name1?.username}</p>
+                          <p>{item?.schoolType}</p>
+                          {/* <p>{item?.adSeccion || item?.wacepkg}</p> */}
+                          <p>{item?.phone}</p>
+                          <p>{amount}</p>
+                          <div className="relative">
+                            <p
+                              className="text-2xl cursor-pointer"
+                              onClick={() => handleToggle(index)}
+                              value={index}
+                            >
+                              ...
+                            </p>
+                            {toggleStates[index] && ( // Show toggle only if toggleStates[index] is true
+                              <div className="text-sm absolute ml-4 pl-4 -right-0 top-0">
+                                <ul className="h-fit border-2 border-gray-600 ul_lists text-justify">
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Download Receipt</li>
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Forward Receipt</li>
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Pay another</li>
+                                </ul>
+
+
+                              </div>
+                            )}
                           </div>
-                        )
-                      })}
-                       {data1?.slice(-6)?.map((item, index)=> {
+                        </div>
+                      )
+                    })}
+                    </div>
+                    {user?.slice(-3)?.map((item, index)=> {
+                      {console.log(item, "console item2jenu");}
                      
                      const { id,feeType,
                        wacepkg,
@@ -575,11 +644,30 @@ const Education = () => {
                        amount, } = item;
                      return (
                        <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
-                         <p>Peter Doe </p>
-                        <p>{item?.feeType}</p>
+                            <p>{name1?.username}</p>
                         <p>{item?.wacepkg}</p>
                         <p>{item?.phone}</p>
                         <p>{amount}</p>
+                        <div className="relative">
+                            <p
+                              className="text-2xl cursor-pointer"
+                              onClick={() => handleToggles(index)}
+                              value={index}
+                            >
+                              ...
+                            </p>
+                            {toggleState[index] && ( // Show toggle only if toggleStates[index] is true
+                              <div className="text-sm absolute ml-4 pl-4 -right-0 top-0">
+                                <ul className="h-fit border-2 border-gray-600 ul_lists text-justify">
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Download Receipt</li>
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Forward Receipt</li>
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Pay another</li>
+                                </ul>
+
+
+                              </div>
+                            )}
+                          </div>
                        </div>
                      )
                    })}

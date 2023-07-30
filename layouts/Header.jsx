@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import FeatherIcon from "feather-icons-react";
 import Image from "next/image";
@@ -13,17 +13,30 @@ import FrFlag from "../assets/img/flags/fr.png";
 import EsFlag from "../assets/img/flags/es.png";
 import DeFlag from "../assets/img/flags/de.png";
 import $ from "jquery";
+import { useGlobalContext } from "../store/authStore";
 
 const Header = () => {
-    const handlesidebar = () => {
-      document.body.classList.toggle("mini-sidebar");
-    };
-    const [loggedInUser, setLoggedInUser] = useState('');
+  const {person, setPerson} = useGlobalContext();
+  const [name, setName] = useState("");
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    setName(username);
+    console.log(username, "login user name");
+  }, []);
+  
+  const handlesidebar = () => {
+    document.body.classList.toggle("mini-sidebar");
+  };
+    
     const handleLogin = async () => {
       try {
         const response = await  fetch('http://localhost:3000/api/v1/auth/login');
-        setLoggedInUser(response); // Save the user's name in state
-        console.log(response, "loggedInUser");
+        const data = response.json();
+        setName(data?.username);
+
+        // setLoggedInUser(response); // Save the user's name in state
+        console.log(response?.username, "loggedInUser");
+
       } catch (error) {
         console.error('Error logging in:', error);
       }
@@ -264,7 +277,7 @@ const Header = () => {
                 <Image width="32" height="32" src={img1} alt="" />
                 <span className="status online"></span>
               </span>
-              <span>Admin</span>
+              <span>{name || 'Admin'}</span>
             </a>
             <div className="dropdown-menu">
               <Link href="/profile">

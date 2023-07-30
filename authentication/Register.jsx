@@ -61,8 +61,7 @@ const Register = () => {
       const result = await response.json();
       console.log(response.status, "whats the result status");
       if (response?.status === 200 || 201) {
-        router.push("/");
-        // window.location.href = "/";      
+        router.push("/login");
       }
       console.log(result, "whats the result");
     } catch (error) {

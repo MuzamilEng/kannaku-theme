@@ -4,6 +4,7 @@ const { createContext, useContext, useState } = require("react");
 const AppContext = createContext();
 export const AppProvider = (props)=> {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [person, setPerson] = useState("");
 
     const openSidebar = ()=> {
         setIsSidebarOpen(true)
@@ -17,7 +18,8 @@ export const AppProvider = (props)=> {
             openSidebar,
             closeSidebar,
             isSidebarOpen, 
-            setIsSidebarOpen
+            setIsSidebarOpen,
+            person, setPerson
         }}>
             {props.children}
         </AppContext.Provider>

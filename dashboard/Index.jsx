@@ -172,7 +172,7 @@ const Dashboard = () => {
                     <i className="fas fa-users"></i>
                   </span>
                   <div className="dash-count">
-                    <div className="dash-title">Customers</div>
+                    <Link href="/login"><span className="dash-title cursor-pointer">Customers / </span></Link><Link href="/NonRegister"><span className="dash-title cursor-pointer">Non Register</span></Link>
                     <div className="dash-counts">
                       <p>3,642</p>
                     </div>

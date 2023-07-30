@@ -63,6 +63,7 @@
     "multi-range-slider-react": "^2.0.3",
     "next": "12.1.6",
     "next-absolute-url": "^1.2.2",
+    "next-auth": "^4.22.3",
     "next-redux-wrapper": "^7.0.5",
     "next-transpile-modules": "^9.0.0",
     "nodemon": "^2.0.22",

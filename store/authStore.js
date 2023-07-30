@@ -10,6 +10,8 @@ const AuthContext = React.createContext({
 export const AuthContextProvider = (props) => {
   const [token, setToken] = React.useState("");
       const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+      const [person, setPerson] = useState({username: ""});
+
 
     const openSidebar = ()=> {
         setIsSidebarOpen(true)
@@ -51,7 +53,8 @@ export const AuthContextProvider = (props) => {
         openSidebar,
         closeSidebar,
         isSidebarOpen, 
-        setIsSidebarOpen
+        setIsSidebarOpen,
+        person, setPerson
       }}
     >
       {props.children}

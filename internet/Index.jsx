@@ -33,85 +33,85 @@ const Internet = () => {
     { id: 9, text: "United States" },
   ]);
   const salesOptions = {
-      colors: ["#7638ff", "#fda600"],
-      chart: {
-        type: "bar",
-        fontFamily: "Poppins, sans-serif",
-        height: 350,
-        toolbar: {
-          show: false,
-        },
+    colors: ["#7638ff", "#fda600"],
+    chart: {
+      type: "bar",
+      fontFamily: "Poppins, sans-serif",
+      height: 350,
+      toolbar: {
+        show: false,
       },
-      series: [
-        {
-          name: "Received",
-          type: "column",
-          data: [70, 150, 80, 180, 150, 175, 201, 60, 200, 120, 190, 160, 50],
-        },
-        {
-          name: "Pending",
-          type: "column",
-          data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16, 80],
-        },
-      ],
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "60%",
-          endingShape: "rounded",
-        },
+    },
+    series: [
+      {
+        name: "Received",
+        type: "column",
+        data: [70, 150, 80, 180, 150, 175, 201, 60, 200, 120, 190, 160, 50],
       },
-      dataLabels: {
-        enabled: false,
+      {
+        name: "Pending",
+        type: "column",
+        data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16, 80],
       },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"],
+    ],
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "60%",
+        endingShape: "rounded",
       },
-      xaxis: {
-        categories: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-        ],
-      },
-      yaxis: {
-        title: {
-          text: "$ (thousands)",
-        },
-      },
-      fill: {
-        opacity: 1,
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return "$ " + val + " thousands";
-          },
-        },
-      },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200,
-            },
-            legend: {
-              position: "bottom",
-            },
-          },
-        },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ["transparent"],
+    },
+    xaxis: {
+      categories: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
       ],
     },
+    yaxis: {
+      title: {
+        text: "$ (thousands)",
+      },
+    },
+    fill: {
+      opacity: 1,
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return "$ " + val + " thousands";
+        },
+      },
+    },
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
+  },
     invoiceOptions = {
       colors: ["#7638ff", "#ff737b", "#fda600", "#1ec1b0"],
       chart: {
@@ -145,27 +145,51 @@ const Internet = () => {
       console.log(ApexCharts);
     }
   }, [data]);
+  const [toggle, setToggle] = useState(false);
+  const [name1, setName1] = useState({ username: "" });
+  const [selected, setSelected] = useState("");
+  useEffect(() => {
+    const getUsernameFromLocalStorage = () => {
+      const username = localStorage.getItem('username');
+      return username;
+    };
+    const initialUsername = getUsernameFromLocalStorage();
+    setName1((prevName) => ({ ...prevName, username: initialUsername }));
+
+    console.log(initialUsername, "login user name");
+  }, []);
   const [formType, setFormType] = useState("");
-  const formHandler = (e) => {};
+  const formHandler = (e) => { };
   function changeForm(event) {
     setFormType(event.target.value);
     console.log("Hi there, user!", event.target.value);
   }
-  const getRequest = async()=>{
+  const getRequest = async () => {
     try {
-     const response = await fetch('http://localhost:3000/api/v1/airtime/')
-     const data = await response.json()
-     setData(data);
-     console.log(data, "data from server");
+      const response = await fetch('http://localhost:3000/api/v1/airtime/')
+      const data = await response.json()
+      setData(data);
+      console.log(data, "data from server");
     } catch (error) {
-     console.log(error);
+      console.log(error);
     }
-   }
+  }
 
-   useEffect(() => {
+  useEffect(() => {
     getRequest();
-   }, [])
+  }, [])
 
+  const initialToggleStates = data?.map(() => false);
+  const [toggleStates, setToggleStates] = useState(initialToggleStates);
+
+  const handleToggle = (index) => {
+    // Create a new array by copying the existing toggleStates array
+    const newToggleStates = [...toggleStates];
+    // Toggle the value for the selected index
+    newToggleStates[index] = !newToggleStates[index];
+    // Update the state with the new array
+    setToggleStates(newToggleStates);
+  };
   function renderSwitch(param) {
     switch (param) {
       case "1":
@@ -503,27 +527,46 @@ const Internet = () => {
                   </div>
                 </div>
 
-                <div className="table-responsive">
-                  <div className="flex grid-cols-5 justify-evenly p-1 border-b-2 border-gray-500">
+                <div className="table-responsive" style={{ marginLeft: "-1rem" }}>
+                  <div className="flex grid-cols-5 justify-evenly p-1 border-b-2 border-gray-500" style={{ marginLeft: "-5rem" }}>
                     <p className="text-gray-800 text-base">Customer</p>
                     <p className="text-gray-800 text-base">Amount</p>
                     <p className="text-gray-800 text-base">Service</p>
                     <p className="text-gray-800 text-base">Provider</p>
                     <p className="text-gray-800 text-base">Action</p>
                   </div>
-                  <div className="">
-                  {data?.slice(-6)?.map((item, index)=> {
-                        const {id ,select, telcoProvider, modemNumber, amount } = item;
-                        return (
-                          <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
-                            <p>Peter Doe </p>
-                           <p>{select}</p>
-                           <p>{telcoProvider}</p>
-                           <p>{modemNumber}</p>
-                           <p>{amount}</p>
+                  <div className="" style={{ marginLeft: "-5rem" }}>
+                    {data?.slice(-6)?.map((item, index) => {
+                      const { id, select, telcoProvider, modemNumber, amount } = item;
+                      return (
+                        <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
+                          <p>{name1?.username}</p>
+                          <p>{modemNumber}</p>
+                          <p>{select}</p>
+                          <p>{telcoProvider}</p>
+                          <div className="relative">
+                            <p
+                              className="text-2xl cursor-pointer"
+                              onClick={() => handleToggle(index)}
+                              value={index}
+                            >
+                              ...
+                            </p>
+                            {toggleStates[index] && ( // Show toggle only if toggleStates[index] is true
+                              <div className="text-sm absolute ml-4 pl-4 -right-0 top-0">
+                                <ul className="h-fit border-2 border-gray-600 ul_lists text-justify">
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Download Receipt</li>
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Forward Receipt</li>
+                                  <li style={{fontSize: ".8rem", padding: ".3rem"}}>Pay another</li>
+                                </ul>
+
+
+                              </div>
+                            )}
                           </div>
-                        )
-                      })}
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
               </div>

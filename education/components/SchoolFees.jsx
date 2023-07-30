@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const Jamb = () => {
+const Jamb = ({onSuccess}) => {
    const [feeType, setFeeType] = useState("");
    const [schoolType, setSchoolType] = useState("")
    const [schoolName, setSchoolName] = useState("")
@@ -10,17 +10,10 @@ const Jamb = () => {
    const [name, setName] = useState("");
    const [phone, setPhone] = useState();
    const [amount, setAmount] = useState();
-    const getRequest = async()=>{
-      try {
-       const response = await fetch('http://localhost:3000/api/v1/education/')
-       const data = await response.json()
-       console.log(data);
-      } catch (error) {
-       console.log(error);
-      }
-     }
      
-       const submitForm = async () => {
+   
+       const submitForm = async (e) => {
+        e.preventDefault();
          try {
            const myHeaders = new Headers();
            myHeaders.append('Content-Type', 'application/json');
@@ -45,6 +38,10 @@ const Jamb = () => {
            };
      
            const response = await fetch('http://localhost:3000/api/v1/education/', requestOptions);
+           if (response.ok || response.status === 200) {
+            window.location.reload("/education");
+             onSuccess();
+           }
            console.log(response, "success howa k nhio");
            const result = await response.json();
            console.log(result);
@@ -60,6 +57,7 @@ const Jamb = () => {
          setAdSession('');
          setSemester('');
          setName('');
+         
        };
     return (
         <>

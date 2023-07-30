@@ -1207,6 +1207,7 @@ const Sidebar = (props) => {
               <li
                 className={`${
                   "/login" === pathName ||
+                  "/NonRegister" === pathName ||
                   "/register" === pathName ||
                   "/forgot-password" === pathName ||
                   "/lock-screen" === pathName
@@ -1224,6 +1225,9 @@ const Sidebar = (props) => {
                   </li>
                   <li className={`${"/register" === pathName ? "active" : ""}`}>
                     <Link href="/register"> Register </Link>
+                  </li>
+                  <li className={`${"/NonRegister" === pathName ? "active" : ""}`}>
+                    <Link href="/NonRegister">Non Register </Link>
                   </li>
                   <li
                     className={`${

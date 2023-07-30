@@ -387,6 +387,11 @@ input:focus{
     padding: .5rem;
     width: 20rem;
   }
+  .ul_lists{
+    width: 6.4rem;
+    height: 8rem;
+    background-color: #ffff;
+  }
   .sideBar_notification{
     max-width: 20rem;
     width: 100%;

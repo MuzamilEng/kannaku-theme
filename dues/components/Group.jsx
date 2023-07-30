@@ -80,7 +80,7 @@ const Group = () => {
                 <div className="col-lg-7">
                 <select className="form-control" value={subscription} onChange={(e)=> setSubscription(e.target.value)}>
                         <option value="">-- Select --</option>
-                        <option value="Monthly Prophetic Seed">Monthly Prophetic Seed</option>
+                        <option value="Monthly Prophetic">Monthly Prophetic</option>
                         <option value="Case 2">Case 2</option>
                         <option value="Case 3">Case 3</option>
                       </select>
