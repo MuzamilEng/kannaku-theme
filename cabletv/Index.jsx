@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useAddTvCableMutation, useGetTvcableQuery } from "../pages/store/vtpassApi";
+import { useGlobalContext } from "../store/authStore";
 // import Select2 from "react-select2-wrapper";
 // import dynamic from "next/dynamic";
 // import recentinvoices from "../json/recentinvoices";
@@ -27,7 +29,7 @@ const Cabletv = () => {
     { id: 3, text: "StarTimes" },
   ]);
   const [tvPlanOptions, setTvPlanOptions] = useState([
-    {id:0, text: "--Select Pakage--"},
+    { id: 0, text: "--Select Pakage--" },
     { id: 1, text: "Premium" },
     { id: 2, text: "Basic" },
     { id: 3, text: "Standard" },
@@ -149,7 +151,7 @@ const Cabletv = () => {
   //   },
   //   recentestimates_ = recentestimates,
   //   recentinvoices_ = recentinvoices;
-  const [name1, setName1] = useState({username:""});
+  const [name1, setName1] = useState({ username: "" });
   useEffect(() => {
     const getUsernameFromLocalStorage = () => {
       const username = localStorage.getItem('username');
@@ -166,68 +168,77 @@ const Cabletv = () => {
       const ApexCharts = require("apexcharts");
     }
   }, []);
+const { requestId } = useGlobalContext();
+console.log(requestId, "request id");
 
-  const [data, setData] = useState([])
-  const [cable, setCable] = useState("");
-  const [tv, setTV] = useState("");
-  const [modemNumber, setModemNumber] = useState();
-  const [amount, setAmount] = useState();
-  const [mobileNumber, setMobileNumber] = useState();
-  const getRequest = async()=>{
+  const { data, isLoading, error } = useGetTvcableQuery();
+
+  const [state, setState] = useState([])
+  const [serviceId, setServiceId] = useState('');
+  const [billerCode, setBillerCode] = useState('');
+  const [variationCode, setVariationCode] = useState('');
+  const [phone, setPhone] = useState('');
+  const [amount, setAmount] = useState('');
+  const [addTvCable] = useAddTvCableMutation()
+
+  const submitForm = async (e) => {
+    e.preventDefault();
     try {
-     const response = await fetch('http://localhost:3000/api/v1/tvCable/')
-     const data = await response.json()
-     setData(data);
-    } catch (error) {
-     console.log(error);
-    }
-   }
+      const result = await addTvCable({ serviceID: serviceId, subscription_type: "change", billersCode: billerCode, variation_code: variationCode, amount: amount, phone: phone, request_id: requestId });
+      console.log(result);
+      if (result.status == '200' || '201'){
+        window.location.reload();
+      }
 
-   useEffect(() => {
-    getRequest();
-   }, []);
-   const initialToggleStates = data?.map(() => false);
-   const [toggleStates, setToggleStates] = useState(initialToggleStates);
- 
-   const handleToggle = (index) => {
-     // Create a new array by copying the existing toggleStates array
-     const newToggleStates = [...toggleStates];
-     // Toggle the value for the selected index
-     newToggleStates[index] = !newToggleStates[index];
-     // Update the state with the new array
-     setToggleStates(newToggleStates);
-   };
-   
-     const submitForm = async () => {
-       try {
-         const myHeaders = new Headers();
-         myHeaders.append('Content-Type', 'application/json');
-        
-         const data = {
-            cable, tv, modemNumber, amount, mobileNumber
-         };
-   
-         const requestOptions = {
-           method: 'POST',
-           headers: myHeaders,
-           body: JSON.stringify(data),
-           redirect: 'follow',
-         };
-   
-         const response = await fetch('http://localhost:3000/api/v1/tvCable/', requestOptions);
-         const result = await response.json();
-         if (response.ok || response.status === 200) {
-          window.location.reload("/cabletv");
-         }
-       } catch (error) {
-         console.log('error', error);
-       }
-       setAmount('');
-       setMobileNumber('');
-       setCable('');
-       setTV('');
-       setModemNumber('');
-     };
+    } catch (error) {
+      console.log('error', error);
+    }
+    setAmount('');
+    setPhone('');
+    setBillerCode('');
+    setVariationCode('');
+    setServiceId('');
+  };
+
+  const initialToggleStates = state?.map(() => false);
+  const [toggleStates, setToggleStates] = useState(initialToggleStates);
+
+  const handleToggle = (index) => {
+    // Create a new array by copying the existing toggleStates array
+    const newToggleStates = [...toggleStates];
+    // Toggle the value for the selected index
+    newToggleStates[index] = !newToggleStates[index];
+    // Update the state with the new array
+    setToggleStates(newToggleStates);
+  };
+  const handleAmount = (e) => {
+    setAmount(e?.target?.value);
+  }
+  useEffect(() => {
+    if (serviceId === "dstv") {
+      setVariationCode("dstv-padi");
+      setAmount(2500.00)
+    } else if (
+      serviceId === "gotv"
+    ) {
+      setVariationCode("gotv-jolli");
+      setAmount(3300.00);
+    } else if (
+      serviceId === "startimes"
+    ) {
+      setVariationCode("basic");
+      setAmount(2100.00);
+    } else {
+      handleAmount();
+    }
+  }, [serviceId]);
+useEffect(() => {
+  if (data) {
+    setState((prev) => {
+      return [...prev, ...data];
+    })
+  }
+}, [data]);
 
   return (
     <div className="page-wrapper">
@@ -474,65 +485,59 @@ const Cabletv = () => {
                       Cable TV Provider
                     </label>
                     <div className="col-lg-7">
-                    <select
-                    className="form-control"
-                    onChange={(e)=> setCable(e.target.value)}
-                    name='cable'
-                    value={cable}
-                  >
-                        {currencyOptions?.map((telco) => (
-                  <option key={telco?.id} value={telco?.text}>
-                    {telco?.text}
-                  </option>
-                ))}
-                  </select>
+                      <select className="form-control" value={serviceId} onChange={(e) => setServiceId(e.target.value)}>
+                        <option value="">-- Select --</option>
+                        <option value="dstv">DSTV Payment</option>
+                        <option value="gotv">Gotv Payment</option>
+                        <option value="startimes">Startimes Payment</option>
+                      </select>
                     </div>
                   </div>
-                  {/* Form - For School Fees Only */}
                   <div className="form-group row">
                     <label className="col-lg-5 col-form-label">
-                      Tv Package/Plan
-                    </label>
-                    <div className="col-lg-7">
-                    <select
-                    className="form-control"
-                    onChange={(e)=> setTV(e.target.value)}
-                    name='tv'
-                    value={tv}
-                  >
-                        {tvPlanOptions?.map((telco) => (
-                  <option key={telco?.id} value={telco?.text}>
-                    {telco?.text}
-                  </option>
-                ))}
-                  </select>
-                      {/* <Select2
-                        className="w-100"
-                        onChange={changeForm}
-                        data={tvPlanOptions}
-                        options={{
-                          placeholder: "Select Desired Plan",
-                        }}
-                      /> */}
-                    </div>
-                  </div>
-
-                  <div className="form-group row">
-                    <label className="col-lg-5 col-form-label">
-                      Modem Number
+                      Smart Card Number
                     </label>
                     <div className="col-lg-7">
                       <input
                         type="text"
-                        name="modemNumber"
-                        value={modemNumber}
+                        name="billersCode"
+                        value={billerCode}
                         className="form-control"
-                        placeholder="Your Modem Number"
-                        onChange={(e) => setModemNumber(e.target.value)}
+                        placeholder="Your Card Number"
+                        onChange={(e) => setBillerCode(e.target.value)}
                       />
                     </div>
                   </div>
-
+                  <div className="form-group row">
+                    <label className="col-lg-5 col-form-label">
+                      Variation Code
+                    </label>
+                    <div className="col-lg-7">
+                      <input
+                        type="text"
+                        name="variationCode"
+                        value={variationCode}
+                        className="form-control"
+                        placeholder="variation Code"
+                        onChange={(e) => setVariationCode(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-lg-5 col-form-label">
+                      Phone Number
+                    </label>
+                    <div className="col-lg-7">
+                      <input
+                        type="text"
+                        name="phone"
+                        value={phone}
+                        className="form-control"
+                        placeholder="Your Phone Number"
+                        onChange={(e) => setPhone(e.target.value)}
+                      />
+                    </div>
+                  </div>
                   <div className="form-group row">
                     <label className="col-lg-5 col-form-label">Amount</label>
                     <div className="col-lg-7">
@@ -550,28 +555,12 @@ const Cabletv = () => {
                           className="form-control"
                           name="amount"
                           value={amount}
-                          onChange={(e) => setAmount(e.target.value)}
+                          onChange={(e) => {setAmount(e.target.value); handleAmount(e)}}
                           placeholder="Amount"
                           aria-label="amount"
                           aria-describedby="basic-addon1"
                         />
                       </div>
-                    </div>
-                  </div>
-
-                  <div className="form-group row">
-                    <label className="col-lg-5 col-form-label">
-                      Phone Number
-                    </label>
-                    <div className="col-lg-7">
-                      <input
-                        type="text"
-                        name="mobileNumber"
-                        value={mobileNumber}
-                        className="form-control"
-                        placeholder="Your Phone Number"
-                        onChange={(e) => setMobileNumber(e.target.value)}
-                      />
                     </div>
                   </div>
 
@@ -656,23 +645,21 @@ const Cabletv = () => {
                 <div className="table-responsive" style={{ marginLeft: "-1rem" }}>
                   <div className="flex grid-cols-5 justify-evenly p-1 border-b-2 border-gray-500" style={{ marginLeft: "-5rem" }}>
                     <p className="text-gray-800 text-base">Customer</p>
-                    <p className="text-gray-800 text-base">Tv Plan</p>
+                    <p className="text-gray-800 text-base">Phone Number</p>
                     <p className="text-gray-800 text-base">Tv Provider</p>
-                    <p className="text-gray-800 text-base">Amount</p>
+                    <p style={{paddingLeft: "3rem"}} className="text-gray-800 text-base">Amount</p>
                     <p className="text-gray-800 text-base">Action</p>
                   </div>
                   <div className="" style={{ marginLeft: "-5rem" }}>
-                  {data?.slice(-6)?.map((item, index)=> {
-                     
-                        const {cable, id, tv, mobileNumber, modemNumber, amount, } = item;
-                        return (
-                          <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
-                            <p>{name1?.username}</p>
-                           <p>{tv}</p>
-                           <p>{cable}</p>
-                           {/* <p>{modemNumber}</p> */}
-                           <p>{amount}</p>
-                           <div className="relative">
+                    {state?.slice(-6)?.map((item, index) => {
+
+                      return (
+                        <div key={index} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
+                          <p>{name1?.username}</p>
+                          <p style={{fontSize: ".9rem", width: "5rem", marginLeft: "2rem"}}>{item?.responseData?.content?.transactions?.unique_element}</p>
+                          <p>{item?.responseData?.content?.transactions?.product_name}</p>
+                          <p>{item?.responseData?.amount}</p>
+                          <div className="relative">
                             <p
                               className="text-2xl cursor-pointer"
                               onClick={() => handleToggle(index)}
@@ -692,9 +679,9 @@ const Cabletv = () => {
                               </div>
                             )}
                           </div>
-                          </div>
-                        )
-                      })}
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
               </div>

@@ -10,10 +10,12 @@ import Select2 from "react-select2-wrapper";
 import $ from "jquery";
 import Data from "./components/Data";
 import Airtime from "./components/Airtime";
+import { useGetAirTimeDataQuery, useGetDataQuery } from "../pages/store/vtpassApi";
+import { useGlobalContext } from "../store/authStore";
 let SlideToggle;
 
 const Internet = () => {
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const [date, setDate] = useState(new Date());
   const [currencyOptions, setcurrencyOptions] = useState([
     { id: 1, text: "Select Currency" },
@@ -144,10 +146,12 @@ const Internet = () => {
       const ApexCharts = require("apexcharts");
       console.log(ApexCharts);
     }
-  }, [data]);
+  }, []);
+  const { data } = useGetDataQuery()
+  const [state, setState] = useState([])
   const [toggle, setToggle] = useState(false);
   const [name1, setName1] = useState({ username: "" });
-  const [selected, setSelected] = useState("");
+  const {airTimeData } = useGlobalContext()
   useEffect(() => {
     const getUsernameFromLocalStorage = () => {
       const username = localStorage.getItem('username');
@@ -156,30 +160,27 @@ const Internet = () => {
     const initialUsername = getUsernameFromLocalStorage();
     setName1((prevName) => ({ ...prevName, username: initialUsername }));
 
-    console.log(initialUsername, "login user name");
   }, []);
+  useEffect(() => {
+    if (data) {
+      setState(prevState => [...prevState, ...data]);
+    }
+  }, [data]);
   const [formType, setFormType] = useState("");
   const formHandler = (e) => { };
   function changeForm(event) {
     setFormType(event.target.value);
     console.log("Hi there, user!", event.target.value);
   }
-  const getRequest = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/api/v1/airtime/')
-      const data = await response.json()
-      setData(data);
-      console.log(data, "data from server");
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const handleResult = (responseData) => {
+  //   console.log(responseData);
+  //   setState([...state, responseData])
+  // }
 
-  useEffect(() => {
-    getRequest();
-  }, [])
+  // useEffect(() => {
+  // }, [handleResult])
 
-  const initialToggleStates = data?.map(() => false);
+  const initialToggleStates = state?.map(() => false);
   const [toggleStates, setToggleStates] = useState(initialToggleStates);
 
   const handleToggle = (index) => {
@@ -190,10 +191,12 @@ const Internet = () => {
     // Update the state with the new array
     setToggleStates(newToggleStates);
   };
+  useEffect(() => {
+  }, [airTimeData])
   function renderSwitch(param) {
     switch (param) {
       case "1":
-        return <Airtime />;
+        return <Airtime onSuccess={state}/>;
       case "2":
         return <Data />;
 
@@ -536,14 +539,14 @@ const Internet = () => {
                     <p className="text-gray-800 text-base">Action</p>
                   </div>
                   <div className="" style={{ marginLeft: "-5rem" }}>
-                    {data?.slice(-6)?.map((item, index) => {
-                      const { id, select, telcoProvider, modemNumber, amount } = item;
+                    {state?.slice(-6)?.map((item, index) => {
+                      // const { id, select, telcoProvider, modemNumber, amount } = item;
                       return (
-                        <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
+                        <div key={index} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
                           <p>{name1?.username}</p>
-                          <p>{modemNumber}</p>
-                          <p>{select}</p>
-                          <p>{telcoProvider}</p>
+                          <p>{item?.responseData?.amount}</p>
+                          <p style={{fontSize: ".9rem", width: "8rem"}}>{item?.responseData?.content?.transactions?.product_name}</p>
+                          <p style={{marginLeft: "-3rem"}}>{item?.responseData?.content?.transactions?.unique_element}</p>
                           <div className="relative">
                             <p
                               className="text-2xl cursor-pointer"

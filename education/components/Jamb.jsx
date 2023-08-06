@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAddDuesMutation } from '../../pages/store/vtpassApi';
 
 const Jamb = ({onSuccess}) => {
     // feeType, wacepkg, amount, phone
@@ -46,7 +47,14 @@ const Jamb = ({onSuccess}) => {
            setAmount('');
 
          };
-
+  
+        // const [serviceId, setServiceId] = useState('');
+        // const [platform, setPlatform] = useState('');
+        // const [addDues] = useAddDuesMutation()
+    //     const submitForm = async (e) => {
+    //      e.preventDefault();
+    //      addDues({ service_id: serviceId, platform: platform });
+    //    };
     return (
         <>
             <div className="form-group row">

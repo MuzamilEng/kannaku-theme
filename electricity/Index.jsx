@@ -10,9 +10,10 @@ import Select2 from "react-select2-wrapper";
 import $ from "jquery";
 import Prepaid from "./components/Prepaid";
 import PostPaid from "./components/Postpaid";
+import { useGetDataQuery, useGetElectricityQuery } from "../pages/store/vtpassApi";
 let SlideToggle;
 
-const Electricity = () => {
+const Electricity = ({onSuccess=()=>{}}) => {
   const [date, setDate] = useState(new Date());
   const [currencyOptions, setcurrencyOptions] = useState([
     { id: 1, text: "Select Currency" },
@@ -145,13 +146,32 @@ const Electricity = () => {
     }
   }, []);
 
+  const { data } = useGetElectricityQuery();
+  const [state, setState] = useState([]);
   const [formType, setFormType] = useState("");
   const formHandler = (e) => {};
   function changeForm(event) {
     setFormType(event.target.value);
     console.log("Hi there, user!", event.target.value);
   }
-  const [name1, setName1] = useState({username:""});
+  // const {data, isLoading, error} = useGetDataQuery();
+  const serviceId = 'jos-electric' || 'eko-electric';
+  const serviceData = data
+  ?.filter((item) => item[0]?.service_id === "jos-electric" || "eko-electric" || "benin-electric" || "ikeja-electric" || "protharcourt-electric" || "kaduna-electric" || "ibadan-electric" || "kano-electric" || "abuja-electric" || "enugu-electric");
+  // console.log(serviceData, "serviceData");
+
+  // // Then filter the mapped data
+  // const filteredServiceData = serviceData?.filter(
+  //   (item) => item.service_id.toLowerCase() === serviceId.toLowerCase()
+  // );
+
+  // console.log(filteredServiceData, "filteredServiceData");
+  const [name1, setName1] = useState("")
+  useEffect(() => {
+    if (data) {
+      setState(prevState => [...prevState, ...data]);
+    }
+  }, [data]);
   useEffect(() => {
     const getUsernameFromLocalStorage = () => {
       const username = localStorage.getItem('username');
@@ -161,9 +181,9 @@ const Electricity = () => {
     const initialUsername = getUsernameFromLocalStorage();
     setName1((prevName) => ({ ...prevName, username: initialUsername }));
 
-    console.log(initialUsername, "login user name");
+    // console.log(initialUsername, "login user name");
   }, []);
-  const [data, setData] = useState([])
+  // const [data, setData] = useState([])
   const getRequest = async()=>{
     try {
       const response = await fetch('http://localhost:3000/api/v1/electricity/')
@@ -175,7 +195,7 @@ const Electricity = () => {
     }
   }
   
-    const initialToggleStates = data?.map(() => false);
+    const initialToggleStates = state?.map(() => false);
     const [toggleStates, setToggleStates] = useState(initialToggleStates);
   
     const handleToggle = (index) => {
@@ -187,9 +207,11 @@ const Electricity = () => {
       setToggleStates(newToggleStates);
     };
 
+    // const [data, setData] = useState([]);
    useEffect(() => {
-    getRequest();
-   }, [])
+    // console.log(data, "data from server");
+    // getRequest();
+   }, [data, serviceData]);
 
   function renderSwitch(param) {
     switch (param) {
@@ -530,24 +552,19 @@ const Electricity = () => {
                   <div className="table-responsive" style={{ marginLeft: "-1rem" }}>
                   <div className="flex grid-cols-5 justify-evenly p-1 border-b-2 border-gray-500" style={{ marginLeft: "-5rem" }}>
                     <p className="text-gray-800 text-base">Customer</p>
-                    <p className="text-gray-800 text-base">Bill Type</p>
                     <p className="text-gray-800 text-base">Disco</p>
+                    <p className="text-gray-800 text-base">Amount</p>
                     <p className="text-gray-800 text-base">Meter Number</p>
                     <p className="text-gray-800 text-base">Action</p>
                   </div>
                   <div className="" style={{ marginLeft: "-5rem" }}>
-                  {data?.slice(-6)?.map((item, index)=> {
-                     
-                        const { id,billType,
-                          disco,
-                          meterNumber,
-                          amount, } = item;
+                  {state?.slice(-6)?.map((item, index)=> {
                         return (
-                          <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
+                          <div key={index} className="flex p-1 mt-2 w-8 items-center justify-evenly border-b-2 border-gray-900">
                             <p>{name1?.username}</p>
-                           <p>{billType}</p>
-                           <p>{disco}</p>
-                           <p>{meterNumber}</p>
+                           <p>{item?.responseData?.amount}</p>
+                           <p style={{fontSize: ".9rem", width: "8rem"}} className="max-w-xs text-sm whitespace-normal">{item?.responseData?.content?.transactions?.product_name}</p>
+                           <p style={{marginLeft: "-3rem"}} className="-ml-2">{item?.responseData?.content?.transactions?.unique_element}</p>
                            <div className="relative">
                             <p
                               className="text-2xl cursor-pointer"
@@ -563,8 +580,6 @@ const Electricity = () => {
                                   <li style={{fontSize: ".8rem", padding: ".3rem"}}>Forward Receipt</li>
                                   <li style={{fontSize: ".8rem", padding: ".3rem"}}>Pay another</li>
                                 </ul>
-
-
                               </div>
                             )}
                           </div>

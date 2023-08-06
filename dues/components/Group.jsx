@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAddDuesMutation } from '../../pages/store/vtpassApi';
 // import Select2 from 'react-select2-wrapper';
 
 
@@ -9,6 +10,8 @@ const Group = () => {
     const [groupService, setGroupService] = useState();
     const [amount, setAmount] = useState();
     const [mobileNumber, setMobileNumber] = useState();
+    const [serviceId, setServiceId] = useState('');
+    const [platform, setPlatform] = useState('');
     const getRequest = async()=>{
       try {
        const response = await fetch('http://localhost:3000/api/v1/dues')
@@ -19,38 +22,45 @@ const Group = () => {
       }
      }
      
-       const submitForm = async () => {
-         try {
-           const myHeaders = new Headers();
-           myHeaders.append('Content-Type', 'application/json');
+      //  const submitForm = async () => {
+      //    try {
+      //      const myHeaders = new Headers();
+      //      myHeaders.append('Content-Type', 'application/json');
      
-           const data = {
-             serviceType,
-             subscription,
-             groupService,
-             mobileNumber,
-             amount,
-           };
+      //      const data = {
+      //        serviceType,
+      //        subscription,
+      //        groupService,
+      //        mobileNumber,
+      //        amount,
+      //      };
      
-           const requestOptions = {
-             method: 'POST',
-             headers: myHeaders,
-             body: JSON.stringify(data),
-             redirect: 'follow',
-           };
+      //      const requestOptions = {
+      //        method: 'POST',
+      //        headers: myHeaders,
+      //        body: JSON.stringify(data),
+      //        redirect: 'follow',
+      //      };
      
-           const response = await fetch('http://localhost:3000/api/v1/dues/', requestOptions);
-           const result = await response.json();
-           console.log(result);
-         } catch (error) {
-           console.log('error', error);
-         }
-         setAmount('');
-         setMobileNumber('');
-         setServiceType('');
-         setSubscription('');
-         setGroupService('');
-       };
+      //      const response = await fetch('http://localhost:3000/api/v1/dues/', requestOptions);
+      //      const result = await response.json();
+      //      console.log(result);
+      //    } catch (error) {
+      //      console.log('error', error);
+      //    }
+      //    setAmount('');
+      //    setMobileNumber('');
+      //    setServiceType('');
+      //    setSubscription('');
+      //    setGroupService('');
+      //  };
+       const [addDues] = useAddDuesMutation();
+       const [data, setData] = useState([])
+       const submitForm = async (e) => {
+        e.preventDefault();
+        addDues({ service_id: serviceId, platform: platform });
+      };
+
 
     return (
         <>
@@ -90,7 +100,7 @@ const Group = () => {
             <div className="form-group row">
                 <label className="col-lg-5 col-form-label">Mobile Number</label>
                 <div className="col-lg-7">
-                    <input type="text" className="form-control" name='mobileNumber' value={mobileNumber} placeholder="Mobile Phone Number" onChange={(e)=> setMobileNumber(e.target.value)}  />
+                    <input type="text" className="form-control" name='mobileNumber' value={serviceId} placeholder="Mobile Phone Number" onChange={(e)=> setServiceId(e.target.value)}  />
                 </div>
             </div>
 
@@ -103,7 +113,7 @@ const Group = () => {
                         <div className="input-group-prepend">
                             <span className="mySpanClass input-group-text" id="basic-addon1">₦</span>
                         </div>
-                        <input type="text" className="form-control" onChange={(e)=> setAmount(e.target.value)} value={amount} placeholder="Amount" aria-label="amount" />
+                        <input type="text" className="form-control" onChange={(e)=> setPlatform(e.target.value)} value={platform} placeholder="Amount" aria-label="amount" />
                     </div>
                 </div>
             </div>

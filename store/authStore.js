@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
+const { DateTime } = require('luxon');
 
 const AuthContext = React.createContext({
   isLoggedIn: false,
@@ -10,6 +11,7 @@ const AuthContext = React.createContext({
 export const AuthContextProvider = (props) => {
   const [token, setToken] = React.useState("");
       const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+      const [airTimeData, setAirTimeData] = useState([]);
       const [person, setPerson] = useState({username: ""});
 
 
@@ -35,6 +37,25 @@ export const AuthContextProvider = (props) => {
     localStorage.setItem("accountType", data.data.userType);
     console.log(data.data.userType, "loginHandler");
   };
+  const generateRequestId = () => {
+    const nigeriaTimeZone = 'Africa/Lagos';
+    const now = DateTime.now().setZone(nigeriaTimeZone);
+    
+    const currentDate = now.toFormat('yyyyMMdd');
+    const currentTime = now.toFormat('HHmmss');
+    const currentSeconds = now.toFormat('ss');
+    const newDate = now.toMillis();
+  
+    const formattedString = `${currentDate}${currentTime}${currentSeconds}${newDate}${'YourAdditionalTextHere'}`;
+  
+    // return formattedString;
+  
+    if (formattedString.length >= 15) {
+      return formattedString.substring(0, 35);
+    }
+  
+    return null; // Return null if the generated string is not at least 12 characters
+  }
 
   const logoutHandler = () => {
     setToken(null);
@@ -50,6 +71,9 @@ export const AuthContextProvider = (props) => {
         userType: accountType,
         login: loginHandler,
         logout: logoutHandler,
+        requestId: generateRequestId(),
+        airTimeData,
+        setAirTimeData,
         openSidebar,
         closeSidebar,
         isSidebarOpen, 
@@ -66,35 +90,3 @@ return useContext(AuthContext)
 }
 
 export default AuthContext;
-
-// const { createContext, useContext, useState } = require("react");
-
-
-// const AppContext = createContext();
-// export const AppProvider = (props)=> {
-//     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-//     const openSidebar = ()=> {
-//         setIsSidebarOpen(true)
-//     }
-//     const closeSidebar = ()=> {
-//         setIsSidebarOpen(false)
-//     }
-
-//     return (
-//         <AppContext.Provider value={{
-//             openSidebar,
-//             closeSidebar,
-//             isSidebarOpen, 
-//             setIsSidebarOpen
-//         }}>
-//             {props.children}
-//         </AppContext.Provider>
-//     )
-// }
-
-// export const useGlobalContext =()=> {
-// return useContext(AppContext)
-// }
-
-// export default AppContext

@@ -80,6 +80,7 @@ const AuthProvider = ({ children }) => {
       })
   }
 
+
   const handleLogout = () => {
     setUser(null)
     window.localStorage.removeItem('userData')

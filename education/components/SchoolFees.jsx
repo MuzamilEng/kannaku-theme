@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAddDuesMutation, useAddEducationMutation } from '../../pages/store/vtpassApi';
 
 const Jamb = ({onSuccess}) => {
    const [feeType, setFeeType] = useState("");
@@ -59,6 +60,14 @@ const Jamb = ({onSuccess}) => {
          setName('');
          
        };
+    
+    // const [serviceId, setServiceId] = useState('');
+    // const [platform, setPlatform] = useState('');
+    // const [addEducation] = useAddEducationMutation();
+//     const submitForm = async (e) => {
+//      e.preventDefault();
+//      await addEducation({ service_id: serviceId, platform: platform });
+//    };
     return (
         <>
             <div className="form-group row">

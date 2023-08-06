@@ -11,6 +11,7 @@ import $ from "jquery";
 import Jamb from "./components/Jamb";
 import Waec from "./components/Waec";
 import SchoolFees from "./components/SchoolFees";
+import { useGetDataQuery, useGetEducationQuery } from "../pages/store/vtpassApi";
 
 let SlideToggle;
 
@@ -153,8 +154,9 @@ const Education = () => {
     setFormType(event.target.value);
     console.log("Hi there, user!", event.target.value);
   }
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const [user, setUser] = useState([]);
+  const [jamb, setJamb] = useState([]);
   const [name1, setName1] = useState({ username: "" });
   useEffect(() => {
     const getUsernameFromLocalStorage = () => {
@@ -165,57 +167,44 @@ const Education = () => {
     const initialUsername = getUsernameFromLocalStorage();
     setName1((prevName) => ({ ...prevName, username: initialUsername }));
 
-    console.log(initialUsername, "login user name");
   }, []);
 
-  const getData = async () => {
-    try {
-      const response1 = await fetch('http://localhost:3000/api/v1/jambfee/');
-      const data2 = await response1.json();
-      setUser(data2);
-      console.log(data2, "data2 from server");
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  const getRequest = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/api/v1/education/')
-      const data = await response.json()
-      setData(data);
-      console.log(data, "data1 from server");
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  const getLatestData = async () => {
+ 
+  // const {data, isLoading, error} = useGetDataQuery();
+  // const { data } = useGetEducationQuery();
+  // const serviceID = 'jos-electric';
+  // const serviceData = data
+  // ?.filter((item) => item[0]?.service_id === serviceID);
+  // console.log(serviceData, "serviceData");
+  const initialToggleState = user?.map(() => false);
+  const [toggleState, setToggleState] = useState(initialToggleState);
 
-    try {
-      const response = await fetch('http://localhost:3000/api/v1/education/')
-      const data = await response.json()
-      setData(data);
-      console.log(data, "data1 from server");
-    } catch (error) {
-      console.log(error);
-    }
+  const getLatestData = async() => {
+    const response  = await fetch('http://localhost:3000/api/v1/education/');
+    const data = await response.json();
+    setUser((prevData) => [...prevData, ...data]);
+    console.log(data);
+  }
+  const getJambData = async() => {
+    const response  = await fetch('http://localhost:3000/api/v1/jambfee/');
+    const data = await response.json();
+    setJamb((prevData) => [...prevData, ...data]);
+    console.log(data);
   }
 
   useEffect(() => {
-    getRequest();
-    getData();
+    getLatestData();
+    getJambData();
   }, [])
-  const initialToggleState = data?.map(() => false);
-  const [toggleState, setToggleState] = useState(initialToggleState);
 
   const handleToggles = (index) => {
-    // Create a new array by copying the existing toggleStates array
     const newToggleState = [...toggleState];
     // Toggle the value for the selected index
     newToggleState[index] = !newToggleState[index];
     // Update the state with the new array
     setToggleState(newToggleState);
   };
-  const initialToggleStates = data?.map(() => false);
+  const initialToggleStates = jamb?.map(() => false);
   const [toggleStates, setToggleStates] = useState(initialToggleStates);
 
   const handleToggle = (index) => {
@@ -230,9 +219,9 @@ const Education = () => {
   function renderSwitch(param) {
     switch (param) {
       case "1":
-        return <SchoolFees onSuccess={() => getLatestData()} />;
+        return <SchoolFees />;
       case "2":
-        return <Jamb onSuccess={() => getLatestData()} />;
+        return <Jamb />;
       case "3":
         return <Jamb />;
       default:
@@ -585,13 +574,13 @@ const Education = () => {
                   <div className="flex grid-cols-5 justify-evenly p-1 border-b-2 border-gray-500" style={{ marginLeft: "-5rem" }}>
                     <p className="text-gray-800 text-base">Customer</p>
                     <p className="text-gray-800 text-base">Type</p>
-                    <p className="text-gray-800 text-base">Amount</p>
                     <p className="text-gray-800 text-base">Phone Number</p>
+                    <p className="text-gray-800 text-base">Amount</p>
                     <p className="text-gray-800 text-base">Action</p>
                   </div>
                   <div className="" style={{ marginLeft: "-5rem" }}>
                     <div className="containers">
-                    {data?.slice(-3)?.map((item, index) => {
+                    {user?.slice(-3)?.map((item, index) => {
 
                       const { id, feeType,
                         schoolType,
@@ -606,11 +595,11 @@ const Education = () => {
                         {console.log(item, "console item");}
                       return (
                         <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
-                          <p>{name1?.username}</p>
-                          <p>{item?.schoolType}</p>
+                          <p style={{width: "3rem"}}>{name1?.username}</p>
+                          <p style={{width: "4rem"}}>{item?.schoolType}</p>
                           {/* <p>{item?.adSeccion || item?.wacepkg}</p> */}
-                          <p>{item?.phone}</p>
-                          <p>{amount}</p>
+                          <p style={{fontSize: ".9rem"}}>{item?.phone}</p>
+                          <p style={{width: "3rem"}}>{amount}</p>
                           <div className="relative">
                             <p
                               className="text-2xl cursor-pointer"
@@ -626,8 +615,6 @@ const Education = () => {
                                   <li style={{fontSize: ".8rem", padding: ".3rem"}}>Forward Receipt</li>
                                   <li style={{fontSize: ".8rem", padding: ".3rem"}}>Pay another</li>
                                 </ul>
-
-
                               </div>
                             )}
                           </div>
@@ -635,7 +622,7 @@ const Education = () => {
                       )
                     })}
                     </div>
-                    {user?.slice(-3)?.map((item, index)=> {
+                    {jamb?.slice(-3)?.map((item, index)=> {
                       {console.log(item, "console item2jenu");}
                      
                      const { id,feeType,
@@ -643,11 +630,11 @@ const Education = () => {
                        phone,
                        amount, } = item;
                      return (
-                       <div key={id} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
+                       <div key={index} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
                             <p>{name1?.username}</p>
-                        <p>{item?.wacepkg}</p>
-                        <p>{item?.phone}</p>
-                        <p>{amount}</p>
+                        <p style={{width: "5rem"}}>{item?.wacepkg}</p>
+                        <p style={{fontSize: ".9rem", marginLeft: "1rem"}}>{item?.phone}</p>
+                        <p style={{width: "3rem"}}>{amount}</p>
                         <div className="relative">
                             <p
                               className="text-2xl cursor-pointer"
@@ -663,8 +650,6 @@ const Education = () => {
                                   <li style={{fontSize: ".8rem", padding: ".3rem"}}>Forward Receipt</li>
                                   <li style={{fontSize: ".8rem", padding: ".3rem"}}>Pay another</li>
                                 </ul>
-
-
                               </div>
                             )}
                           </div>

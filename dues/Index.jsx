@@ -10,6 +10,7 @@ import Select2 from "react-select2-wrapper";
 import $ from "jquery";
 import sub from "./components/sub";
 import Group from "./components/Group";
+import { useAddDuesMutation, useGetDataQuery } from "../pages/store/vtpassApi";
 
 let SlideToggle;
 
@@ -164,22 +165,28 @@ const Dues = () => {
 
     console.log(initialUsername, "login user name");
   }, []);
-  const [data, setData] = useState([])
+  // const [data, setData] = useState([])
   const [state, setState] = useState(data?.[0]);
-  const getRequest = async()=>{
-    try {
-     const response = await fetch('http://localhost:3000/api/v1/dues/')
-     const data = await response.json()
-     setData(data);
-    console.log(data, "data from server");
-    } catch (error) {
-     console.log(error);
-    }
-   }
+  // const getRequest = async()=>{
+  //   try {
+  //    const response = await fetch('http://localhost:3000/api/v1/dues/')
+  //    const data = await response.json()
+  //    setData(data);
+  //   console.log(data, "data from server");
+  //   } catch (error) {
+  //    console.log(error);
+  //   }
+  //  }
 
-   useEffect(() => {
-    getRequest();
-   }, [])
+  //  useEffect(() => {
+  //   getRequest();
+  //  }, [])
+
+  const {data, isLoading, error} = useGetDataQuery();
+  const serviceId = 'jos-electric';
+  const serviceData = data
+  ?.filter((item) => item[0]?.service_id === serviceId);
+  console.log(serviceData, "serviceData");
 
    const initialToggleStates = data?.map(() => false);
    const [toggleStates, setToggleStates] = useState(initialToggleStates);
@@ -575,7 +582,7 @@ const Dues = () => {
                             >
                               ...
                             </p>
-                            {toggleStates[index] && ( // Show toggle only if toggleStates[index] is true
+                            {/* {toggleStates[index] && ( // Show toggle only if toggleStates[index] is true
                               <div className="text-sm absolute ml-4 pl-4 -right-0 top-0">
                                 <ul className="h-fit border-2 border-gray-600 ul_lists text-justify">
                                   <li style={{fontSize: ".8rem", padding: ".3rem"}}>Download Receipt</li>
@@ -585,7 +592,7 @@ const Dues = () => {
 
 
                               </div>
-                            )}
+                            )} */}
                           </div>
                           </div>
                         )

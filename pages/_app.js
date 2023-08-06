@@ -33,15 +33,18 @@ import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
 
 import { AuthContextProvider } from "../store/authStore";
-
+import { Provider } from 'react-redux'
+import { stores } from "./store/store";
 function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
   return getLayout(
+    <Provider store={stores}>
     <AuthContextProvider>
       {/* <AppProvider>
       </AppProvider> */}
       <Component {...pageProps} />
     </AuthContextProvider>
+    </Provider>
   );
 }
 
