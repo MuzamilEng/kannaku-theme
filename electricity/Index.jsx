@@ -149,10 +149,18 @@ const Electricity = ({onSuccess=()=>{}}) => {
   const { data } = useGetElectricityQuery();
   const [state, setState] = useState([]);
   const [formType, setFormType] = useState("");
+  const [showData, setShowData] = useState(true);
   const formHandler = (e) => {};
   function changeForm(event) {
     setFormType(event.target.value);
     console.log("Hi there, user!", event.target.value);
+  }
+  const handleShowData = () => {
+    {state?.map((item, index)=> {
+      if (item?.responseData?.content?.errors){
+        setShowData(false);
+      }
+    })}
   }
   // const {data, isLoading, error} = useGetDataQuery();
   const serviceId = 'jos-electric' || 'eko-electric';
@@ -171,6 +179,7 @@ const Electricity = ({onSuccess=()=>{}}) => {
     if (data) {
       setState(prevState => [...prevState, ...data]);
     }
+    handleShowData()
   }, [data]);
   useEffect(() => {
     const getUsernameFromLocalStorage = () => {
@@ -558,7 +567,7 @@ const Electricity = ({onSuccess=()=>{}}) => {
                     <p className="text-gray-800 text-base">Action</p>
                   </div>
                   <div className="" style={{ marginLeft: "-5rem" }}>
-                  {state?.slice(-6)?.map((item, index)=> {
+                  {showData && state?.slice(-6)?.map((item, index)=> {
                         return (
                           <div key={index} className="flex p-1 mt-2 w-8 items-center justify-evenly border-b-2 border-gray-900">
                             <p>{name1?.username}</p>

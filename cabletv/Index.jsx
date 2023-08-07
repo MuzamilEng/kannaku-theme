@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAddTvCableMutation, useGetTvcableQuery } from "../pages/store/vtpassApi";
 import { useGlobalContext } from "../store/authStore";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 // import Select2 from "react-select2-wrapper";
 // import dynamic from "next/dynamic";
 // import recentinvoices from "../json/recentinvoices";
@@ -183,22 +185,48 @@ console.log(requestId, "request id");
 
   const submitForm = async (e) => {
     e.preventDefault();
+  
+    if (!serviceId || !billerCode || !variationCode || !amount || !phone) {
+      toast.error('Please fill out all required fields before submitting.', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+      return; // Return early if any required field is missing
+    }
+  
     try {
-      const result = await addTvCable({ serviceID: serviceId, subscription_type: "change", billersCode: billerCode, variation_code: variationCode, amount: amount, phone: phone, request_id: requestId });
-      console.log(result);
-      if (result.status == '200' || '201'){
+      const result = await addTvCable({
+          serviceID: serviceId,
+          subscription_type: 'change',
+          billersCode: billerCode,
+          variation_code: variationCode,
+          amount: amount,
+          phone: phone,
+          request_id: requestId,
+      });
+  
+      if (result && (result.status === '200' || 200  || result.status === '201' || 201)) {
+        toast.success('Action successful!', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+        });
         window.location.reload();
       }
-
     } catch (error) {
-      console.log('error', error);
+      // toast.error('Something went wrong!', {
+      //   position: toast.POSITION.TOP_CENTER,
+      //   autoClose: 5000,
+      // });
+      console.error('error', error);
     }
+  
     setAmount('');
     setPhone('');
     setBillerCode('');
     setVariationCode('');
     setServiceId('');
   };
+  
 
   const initialToggleStates = state?.map(() => false);
   const [toggleStates, setToggleStates] = useState(initialToggleStates);
@@ -267,7 +295,7 @@ useEffect(() => {
             </div>
           </div>
         </div>
-
+        <ToastContainer />
         {/* container */}
         <div className="row">
           <div className="col-xl-4 col-sm-6 col-12">

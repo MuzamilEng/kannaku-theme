@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAddElectricityMutation } from "../../pages/store/vtpassApi";
 import { useGlobalContext } from "../../store/authStore";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Electricity = ({ onSuccess = () => { }, meterNumbers, amounts }) => {
   const [telcoOptions, setTelcoOptions] = useState([
@@ -26,22 +28,46 @@ const Electricity = ({ onSuccess = () => { }, meterNumbers, amounts }) => {
   const submitForm = async (e) => {
     e.preventDefault();
     console.log("submitted");
+  
+    // Check if any field is missing
+    if (!serviceId || !billerCode || !phone) {
+      toast.error('Please fill out all fields before submitting.', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+      return; // Return early if any field is missing
+    }
+  
     try {
-      const result = await addElectricity({ serviceID : serviceId, request_id: requestId, billersCode: billerCode, variation_code: variationCode, amount: amount, phone: phone });
-      console.log(result?.responseData, "result");
-      if (result.status == '200' || '201'){
+      const result = await addElectricity({
+          serviceID: serviceId,
+          request_id: requestId,
+          billersCode: billerCode,
+          variation_code: variationCode,
+          amount: amount,
+          phone: phone,
+      });
+  
+      // Assuming your mutation returns a status field
+      if (result && (result.status === '200' || 200  || result.status === '201' || 201)) {
+        toast.success('Action successful!', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+        });
         window.location.reload();
       }
-      setResponseData(data); // Store the response data in the state
-      setAmount('');
-      setPhone('');
-      setBillerCode('');
-      setVariationCode('');
-      setServiceId('');
+  
+      // Other logic here
+  
     } catch (error) {
+      // toast.error('Something went wrong!', {
+      //   position: toast.POSITION.TOP_CENTER,
+      //   autoClose: 5000,
+      // });
       console.error('Error occurred:', error);
     }
   };
+  
 
   return (
     <>
@@ -55,6 +81,8 @@ const Electricity = ({ onSuccess = () => { }, meterNumbers, amounts }) => {
           </select>
         </div>
       </div>
+      <ToastContainer />
+
       <div className="form-group row">
         <label className="col-lg-5 col-form-label">Disco </label>
         <div className="col-lg-7">

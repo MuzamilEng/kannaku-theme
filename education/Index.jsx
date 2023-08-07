@@ -598,7 +598,7 @@ const Education = () => {
                           <p style={{width: "3rem"}}>{name1?.username}</p>
                           <p style={{width: "4rem"}}>{item?.schoolType}</p>
                           {/* <p>{item?.adSeccion || item?.wacepkg}</p> */}
-                          <p style={{fontSize: ".9rem"}}>{item?.phone}</p>
+                          <p style={{fontSize: ".9rem"}}>0{item?.phone}</p>
                           <p style={{width: "3rem"}}>{amount}</p>
                           <div className="relative">
                             <p
@@ -633,7 +633,7 @@ const Education = () => {
                        <div key={index} className="flex p-1 mt-2 justify-evenly border-b-2 border-gray-900">
                             <p>{name1?.username}</p>
                         <p style={{width: "5rem"}}>{item?.wacepkg}</p>
-                        <p style={{fontSize: ".9rem", marginLeft: "1rem"}}>{item?.phone}</p>
+                        <p style={{fontSize: ".9rem", marginLeft: "1rem"}}>0{item?.phone}</p>
                         <p style={{width: "3rem"}}>{amount}</p>
                         <div className="relative">
                             <p

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAddDuesMutation, useAddEducationMutation } from '../../pages/store/vtpassApi';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Jamb = ({onSuccess}) => {
    const [feeType, setFeeType] = useState("");
@@ -13,61 +15,85 @@ const Jamb = ({onSuccess}) => {
    const [amount, setAmount] = useState();
      
    
-       const submitForm = async (e) => {
-        e.preventDefault();
-         try {
-           const myHeaders = new Headers();
-           myHeaders.append('Content-Type', 'application/json');
-     
-           const data = {
-             feeType,
-             schoolType,
-             schoolName,
-             adSeccion,
-             semester,
-             matric,
-             name,
-             phone,
-             amount,
-           };
-     
-           const requestOptions = {
-             method: 'POST',
-             headers: myHeaders,
-             body: JSON.stringify(data),
-             redirect: 'follow',
-           };
-     
-           const response = await fetch('http://localhost:3000/api/v1/education/', requestOptions);
-           if (response.ok || response.status === 200) {
-            window.location.reload("/education");
-             onSuccess();
-           }
-           console.log(response, "success howa k nhio");
-           const result = await response.json();
-           console.log(result);
-         } catch (error) {
-           console.log('error', error);
-         }
-         setAmount('');
-         setMatric('');
-         setPhone('');
-         setFeeType('');
-         setSchoolType('');
-         setSchoolName('');
-         setAdSession('');
-         setSemester('');
-         setName('');
-         
-       };
+   const submitForm = async (e) => {
+    e.preventDefault();
     
-    // const [serviceId, setServiceId] = useState('');
-    // const [platform, setPlatform] = useState('');
-    // const [addEducation] = useAddEducationMutation();
-//     const submitForm = async (e) => {
-//      e.preventDefault();
-//      await addEducation({ service_id: serviceId, platform: platform });
-//    };
+    // Check if any required field is missing
+    if (
+      !schoolType ||
+      !schoolName ||
+      !adSeccion ||
+      !semester ||
+      !matric ||
+      !name ||
+      !phone ||
+      !amount
+    ) {
+      toast.error('Please fill out all required fields before submitting.', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+      return; // Return early if any required field is missing
+    }
+  
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+  
+      const data = {
+        feeType,
+        schoolType,
+        schoolName,
+        adSeccion,
+        semester,
+        matric,
+        name,
+        phone,
+        amount,
+      };
+  
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(data),
+        redirect: 'follow',
+      };
+  
+      const response = await fetch('http://localhost:3000/api/v1/education/', requestOptions);
+  
+      if (response.ok || response.status === 200) {
+        toast.success('Action successful!', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+        });
+        window.location.reload("/education"); // Redirect to the specified URL
+        onSuccess();
+      } else {
+        const result = await response.json();
+        // Handle the response error here
+        toast.error('Something went wrong!', {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+        });
+      }
+    } catch (error) {
+    //   toast.error('Something went wrong!', {
+    //     position: toast.POSITION.TOP_CENTER,
+    //     autoClose: 5000,
+    //   });
+      console.log('error', error);
+    }
+  
+    setAmount('');
+    setMatric('');
+    setPhone('');
+    setFeeType('');
+    setSchoolType('');
+    setSchoolName('');
+    setAdSession('');
+    setSemester('');
+    setName('');
+  };
     return (
         <>
             <div className="form-group row">
@@ -83,6 +109,7 @@ const Jamb = ({onSuccess}) => {
                     </select>
                 </div>
             </div>
+            <ToastContainer />
             <div className="form-group row">
                 <label className="col-lg-5 col-form-label">School Name </label>
                 <div className="col-lg-7">

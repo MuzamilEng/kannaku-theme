@@ -2,6 +2,8 @@ import { element } from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useAddAirTimeMutation } from '../../pages/store/vtpassApi';
 import { useGlobalContext } from '../../store/authStore';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 const Airtime = () => {
   const [select, setSelect] = useState('');
   const [serviceId, setServiceId] = useState('');
@@ -20,22 +22,58 @@ const {requestId, setAirTimeData} = useGlobalContext()
   // console.log(requestId);
   const submitForm = async (e) => {
     e.preventDefault();
+  
+    if (!serviceId || !phone) {
+      toast.error('Please fill out all required fields before submitting.', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+      return; // Return early if any required field is missing
+    }
+  
     try {
-      if (select == 'Airtime') {
-        const result = await addAirTime({ serviceID: serviceId, amount: amount, phone: phone, request_id: requestId });
-        setAirTimeData(result);
-        if (result.status == '200' || '201'){
-          window.location.reload();
-        }
-        // console.log(result);
+      let result = null;
+  
+      if (select === 'Airtime') {
+        result = await addAirTime({
+          serviceID: serviceId,
+          amount: amount,
+          phone: phone,
+          request_id: requestId,
+        });
+      } else if (select === 'Data') {
+        result = await addAirTime({
+          serviceID: serviceId,
+          billersCode: billerCode,
+          variation_code: variationCode,
+          amount: amount,
+          phone: phone,
+          request_id: requestId,
+        });
       }
-      if (select == 'Data') {
-        const result = await addAirTime({ serviceID: serviceId, billersCode: billerCode, variation_code: variationCode, amount: amount, phone: phone, request_id: requestId });
-        // console.log(result);
+  
+      // console.log('API Response:', result); // Check the response in the console
+  
+      if (result && (result.status === '200' || 200  || result.status === '201' || 201)) {
+        // console.log('Action successful:', result); // Check if this log is displayed
+  
+        toast.success('Action successful!', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+        });
+  
+        // Reload the page or navigate to the specified URL
+        // window.location.reload();
+        window.location.href = '/internet';
       }
     } catch (error) {
-      console.log('error', error);
+      toast.error('Something went wrong!', {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 5000,
+      });
+      console.error('Error:', error);
     }
+  
     setSelect('');
     setAmount('');
     setPhone('');
@@ -43,6 +81,8 @@ const {requestId, setAirTimeData} = useGlobalContext()
     setVariationCode('');
     setServiceId('');
   };
+  
+  
   useEffect(() => {
     if (variationCode === "airt-50") {
       setAmount(50);
@@ -92,6 +132,7 @@ const {requestId, setAirTimeData} = useGlobalContext()
             <option value="Airtime">Airtime</option>
             <option value="Data">Data</option>
           </select>
+          <ToastContainer />
           <br />
         </div>
         <label className="col-lg-5 col-form-label">Telco Provider</label>
